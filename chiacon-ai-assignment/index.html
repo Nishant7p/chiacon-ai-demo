@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chiacon — IT Services & AI Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:          #f5f6f8;
+      --white:       #ffffff;
+      --navy:        #0d1e3d;
+      --navy-mid:    #1a3260;
+      --teal:        #1477a0;
+      --teal-soft:   #e6f2f7;
+      --teal-mid:    #b8d9e8;
+      --text:        #1a2840;
+      --muted:       #64748b;
+      --border:      #dde3eb;
+      --border-dark: #c5cfd9;
+      --radius-sm:   8px;
+      --radius:      12px;
+      --radius-lg:   18px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg); color: var(--text);
+      font-size: 16px; line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.93);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 64px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark { width: 32px; height: 32px; }
+    .logo-name { font-weight: 500; font-size: 1.05rem; color: var(--navy); letter-spacing: .04em; }
+    .logo-name b { color: var(--teal); font-weight: 500; }
+    .nav-right { display: flex; align-items: center; gap: 32px; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: .875rem; transition: color .15s; }
+    .nav-links a:hover { color: var(--text); }
+    .btn-nav {
+      background: var(--navy); color: #fff; border: none;
+      padding: 9px 22px; border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif; font-size: .875rem; font-weight: 500;
+      cursor: pointer; text-decoration: none; transition: background .15s;
+    }
+    .btn-nav:hover { background: var(--navy-mid); }
+
+    /* ── HERO ── */
+    .hero { background: var(--white); border-bottom: 1px solid var(--border); padding: 96px 64px 80px; }
+    .hero-inner {
+      max-width: 1120px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 400px; gap: 80px; align-items: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--teal-soft); border: 1px solid var(--teal-mid);
+      border-radius: 100px; padding: 5px 14px;
+      font-size: .72rem; font-weight: 500; color: var(--teal);
+      letter-spacing: .07em; text-transform: uppercase; margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-family: 'Instrument Serif', serif; font-weight: 400;
+      font-size: clamp(2.4rem, 4vw, 3.4rem); line-height: 1.12;
+      color: var(--navy); margin-bottom: 22px;
+    }
+    .hero h1 em { font-style: italic; color: var(--teal); }
+    .hero-desc { font-size: 1.05rem; color: var(--muted); line-height: 1.75; font-weight: 300; max-width: 520px; margin-bottom: 36px; }
+    .hero-actions { display: flex; gap: 12px; }
+    .btn-primary {
+      background: var(--navy); color: #fff; border: none;
+      padding: 13px 28px; border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif; font-size: .9rem; font-weight: 500;
+      cursor: pointer; text-decoration: none; transition: background .15s;
+    }
+    .btn-primary:hover { background: var(--navy-mid); }
+    .btn-outline {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border-dark); padding: 13px 28px;
+      border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif;
+      font-size: .9rem; cursor: pointer; text-decoration: none;
+      transition: border-color .15s, color .15s;
+    }
+    .btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+    .hero-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; }
+    .hero-card-label { font-size: .7rem; font-weight: 500; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
+    .pill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .pill { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; }
+    .pill-icon { font-size: 1.15rem; margin-bottom: 7px; }
+    .pill-name { font-size: .8rem; font-weight: 500; color: var(--text); display: block; }
+    .pill-sub  { font-size: .7rem; color: var(--muted); display: block; margin-top: 2px; }
+    .hero-card-foot { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); font-size: .78rem; color: var(--muted); line-height: 1.6; }
+    .hero-card-foot span { color: var(--teal); font-weight: 500; }
+
+    /* ── SECTION ── */
+    .section-wrap { max-width: 1120px; margin: 0 auto; padding: 80px 64px; }
+    .section-header { margin-bottom: 48px; }
+    .section-kicker { font-size: .7rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+    .section-title { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(1.9rem, 3vw, 2.5rem); color: var(--navy); line-height: 1.18; margin-bottom: 14px; }
+    .section-body { font-size: 1rem; color: var(--muted); font-weight: 300; line-height: 1.7; max-width: 560px; }
+
+    /* ── SERVICES ── */
+    .services-bg { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .services-grid { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    .sc { background: var(--white); border-right: 1px solid var(--border); padding: 30px 26px; transition: background .2s; }
+    .sc:last-child { border-right: none; }
+    .sc:hover { background: var(--teal-soft); }
+    .sc-icon { width: 38px; height: 38px; background: var(--teal-soft); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1rem; margin-bottom: 16px; }
+    .sc-title { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.1rem; color: var(--navy); margin-bottom: 9px; }
+    .sc-body { font-size: .84rem; color: var(--muted); line-height: 1.65; font-weight: 300; }
+
+    /* ── USE CASES ── */
+    .uc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .uc { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px 26px; display: flex; flex-direction: column; transition: border-color .2s, transform .2s; }
+    .uc:hover { border-color: var(--teal); transform: translateY(-3px); }
+    .uc-tag { display: inline-block; background: var(--teal-soft); border: 1px solid var(--teal-mid); border-radius: 100px; padding: 4px 12px; font-size: .7rem; font-weight: 500; color: var(--teal); letter-spacing: .05em; text-transform: uppercase; margin-bottom: 18px; align-self: flex-start; }
+    .uc-title { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.1rem; color: var(--navy); margin-bottom: 11px; line-height: 1.3; }
+    .uc-body { font-size: .86rem; color: var(--muted); line-height: 1.7; font-weight: 300; flex: 1; }
+    .uc-detail { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); font-size: .8rem; color: var(--muted); line-height: 1.6; }
+    .uc-detail strong { color: var(--text); font-weight: 500; }
+
+    /* ════════════════════════════════════════
+       DEMO SECTION
+    ════════════════════════════════════════ */
+    .demo-bg { background: var(--navy); border-top: 1px solid rgba(255,255,255,.06); }
+    .demo-bg .section-kicker { color: #7ec8e3; }
+    .demo-bg .section-title  { color: #e8edf4; }
+    .demo-bg .section-body   { color: #8fa3b8; }
+
+    /* ── MODE TOGGLE ── */
+    .mode-toggle-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px; flex-wrap: wrap; gap: 12px;
+    }
+    .mode-label-group { display: flex; align-items: center; gap: 14px; }
+    .mode-label {
+      font-size: .78rem; color: rgba(143,163,184,.7);
+      font-weight: 400; transition: color .2s;
+    }
+    .mode-label.active { color: #e8edf4; font-weight: 500; }
+
+    /* pill toggle switch */
+    .toggle-switch {
+      position: relative; width: 56px; height: 28px; cursor: pointer;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 100px;
+      transition: background .2s, border-color .2s;
+    }
+    .toggle-switch input:checked ~ .toggle-track {
+      background: rgba(20,119,160,.5);
+      border-color: rgba(126,200,227,.4);
+    }
+    .toggle-thumb {
+      position: absolute; top: 4px; left: 4px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: rgba(200,214,228,.7);
+      transition: transform .22s cubic-bezier(.4,0,.2,1), background .2s;
+    }
+    .toggle-switch input:checked ~ .toggle-track .toggle-thumb {
+      transform: translateX(28px);
+      background: #7ec8e3;
+    }
+    .mode-hint {
+      font-size: .72rem; color: rgba(143,163,184,.5);
+    }
+
+    /* ── SHARED: input card shell ── */
+    .demo-card {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    /* ════ WIZARD MODE ════ */
+    /* progress bar */
+    .wiz-progress-bar {
+      height: 3px;
+      background: rgba(255,255,255,.08);
+      position: relative;
+    }
+    .wiz-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal), #7ec8e3);
+      border-radius: 0 3px 3px 0;
+      transition: width .4s cubic-bezier(.4,0,.2,1);
+      width: 0%;
+    }
+    .wiz-progress-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 28px 0;
+    }
+    .wiz-step-dots { display: flex; gap: 6px; align-items: center; }
+    .wiz-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,.18);
+      transition: background .3s, transform .3s;
+    }
+    .wiz-dot.done  { background: #7ec8e3; }
+    .wiz-dot.active{ background: #7ec8e3; transform: scale(1.5); }
+    .wiz-pct {
+      font-size: .72rem; font-weight: 500; color: #7ec8e3;
+      letter-spacing: .05em;
+    }
+
+    /* slide container */
+    .wiz-slides {
+      position: relative; overflow: hidden;
+      min-height: 260px;
+    }
+    .wiz-slide {
+      position: absolute; inset: 0;
+      padding: 28px 28px 24px;
+      opacity: 0; pointer-events: none;
+      transform: translateX(48px);
+      transition: opacity .32s ease, transform .32s cubic-bezier(.4,0,.2,1);
+      display: flex; flex-direction: column; gap: 18px;
+    }
+    .wiz-slide.active {
+      opacity: 1; pointer-events: all;
+      transform: translateX(0);
+      position: relative;
+    }
+    .wiz-slide.exit-left {
+      opacity: 0; pointer-events: none;
+      transform: translateX(-48px);
+      position: absolute;
+    }
+
+    .wiz-q-num {
+      font-size: .68rem; font-weight: 500; letter-spacing: .1em;
+      text-transform: uppercase; color: rgba(126,200,227,.6);
+    }
+    .wiz-q-text {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.35rem; color: #e8edf4; line-height: 1.3;
+      font-weight: 400;
+    }
+    .wiz-q-sub {
+      font-size: .82rem; color: rgba(143,163,184,.65);
+      font-weight: 300; margin-top: -10px;
+    }
+
+    /* chips in wizard */
+    .wiz-chips { display: flex; flex-wrap: wrap; gap: 9px; }
+    .wiz-chip {
+      background: rgba(255,255,255,.06);
+      border: 1.5px solid rgba(255,255,255,.1);
+      border-radius: var(--radius-sm);
+      padding: 9px 18px;
+      font-size: .875rem; color: rgba(200,214,228,.8);
+      cursor: pointer; transition: all .16s; user-select: none;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .wiz-chip:hover { background: rgba(255,255,255,.1); color: #e8edf4; border-color: rgba(255,255,255,.2); }
+    .wiz-chip.selected {
+      background: rgba(20,119,160,.3);
+      border-color: rgba(126,200,227,.6);
+      color: #7ec8e3; font-weight: 500;
+    }
+    .wiz-chip.other-chip {
+      border-style: dashed;
+      color: rgba(143,163,184,.7);
+    }
+    .wiz-chip.other-chip.selected { border-style: solid; }
+
+    /* "other" text input inside wizard slide */
+    .wiz-other-input {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: var(--radius-sm);
+      color: #e8edf4; padding: 11px 15px;
+      font-size: .9rem; font-family: 'DM Sans', sans-serif; font-weight: 300;
+      outline: none; width: 100%;
+      transition: border-color .15s, opacity .2s;
+      display: none;
+    }
+    .wiz-other-input.visible { display: block; }
+    .wiz-other-input:focus { border-color: rgba(126,200,227,.5); }
+    .wiz-other-input::placeholder { color: rgba(143,163,184,.35); }
+
+    /* textarea slide (last question) */
+    .wiz-textarea {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius-sm);
+      color: #e8edf4; padding: 13px 15px;
+      font-size: .9rem; font-family: 'DM Sans', sans-serif; font-weight: 300;
+      outline: none; resize: vertical; min-height: 110px; width: 100%;
+      transition: border-color .15s; line-height: 1.6;
+    }
+    .wiz-textarea:focus { border-color: rgba(126,200,227,.5); }
+    .wiz-textarea::placeholder { color: rgba(143,163,184,.35); }
+
+    /* wizard nav footer */
+    .wiz-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 28px 22px; border-top: 1px solid rgba(255,255,255,.07);
+    }
+    .wiz-skip {
+      font-size: .8rem; color: rgba(143,163,184,.5); cursor: pointer;
+      background: none; border: none; font-family: 'DM Sans', sans-serif;
+      transition: color .15s; padding: 0;
+    }
+    .wiz-skip:hover { color: rgba(143,163,184,.8); }
+    .wiz-nav-right { display: flex; gap: 10px; align-items: center; }
+    .wiz-back {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      color: rgba(200,214,228,.7);
+      padding: 10px 18px; border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif; font-size: .86rem;
+      cursor: pointer; transition: all .15s;
+    }
+    .wiz-back:hover { background: rgba(255,255,255,.13); color: #e8edf4; }
+    .wiz-back:disabled { opacity: .25; cursor: default; }
+    .wiz-next {
+      background: var(--teal); color: #fff;
+      border: none; padding: 10px 22px; border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif; font-size: .88rem; font-weight: 500;
+      cursor: pointer; transition: background .15s;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .wiz-next:hover { background: #1a8fbf; }
+    .wiz-next:disabled { opacity: .35; cursor: default; }
+    .wiz-next.generate-btn {
+      background: linear-gradient(135deg, var(--teal), #2ba3cc);
+    }
+
+    /* ════ ALL-AT-ONCE MODE ════ */
+    .all-mode {
+      padding: 28px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .all-mode-title { font-size: .72rem; font-weight: 500; letter-spacing: .09em; text-transform: uppercase; color: #7ec8e3; margin-bottom: 4px; }
+    .chip-row { }
+    .chip-row-label { font-size: .72rem; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: rgba(143,163,184,.7); margin-bottom: 9px; display: flex; align-items: center; gap: 5px; }
+    .chip-row-label .req { color: #7ec8e3; }
+    .all-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .all-chip {
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.11);
+      border-radius: 100px; padding: 7px 16px;
+      font-size: .82rem; color: rgba(200,214,228,.8);
+      cursor: pointer; transition: all .15s; user-select: none;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .all-chip:hover { background: rgba(255,255,255,.1); color: #e8edf4; }
+    .all-chip.selected { background: rgba(20,119,160,.3); border-color: rgba(126,200,227,.5); color: #7ec8e3; font-weight: 500; }
+    .all-chip.other-all { border-style: dashed; }
+    .all-other-input {
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15);
+      border-radius: var(--radius-sm); color: #e8edf4; padding: 9px 13px;
+      font-size: .86rem; font-family: 'DM Sans', sans-serif; font-weight: 300;
+      outline: none; width: 100%; transition: border-color .15s; display: none; margin-top: 6px;
+    }
+    .all-other-input.visible { display: block; }
+    .all-other-input:focus { border-color: rgba(126,200,227,.5); }
+    .all-other-input::placeholder { color: rgba(143,163,184,.35); }
+    .all-textarea {
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius); color: #e8edf4; padding: 13px 15px;
+      font-size: .9rem; font-family: 'DM Sans', sans-serif; font-weight: 300;
+      outline: none; resize: vertical; min-height: 110px; width: 100%;
+      transition: border-color .15s; line-height: 1.6;
+    }
+    .all-textarea:focus { border-color: rgba(126,200,227,.5); }
+    .all-textarea::placeholder { color: rgba(143,163,184,.35); }
+    .all-f-hint { font-size: .72rem; color: rgba(143,163,184,.45); }
+    .all-btn-row { display: flex; gap: 10px; }
+    .btn-gen-all {
+      flex: 1; padding: 13px; background: var(--teal); color: #fff;
+      border: none; border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif; font-size: .9rem; font-weight: 500;
+      cursor: pointer; transition: background .15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-gen-all:hover:not(:disabled) { background: #1a8fbf; }
+    .btn-gen-all:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-reset-all {
+      padding: 13px 16px; background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12); color: rgba(200,214,228,.6);
+      border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif;
+      font-size: .84rem; cursor: pointer; transition: all .15s;
+    }
+    .btn-reset-all:hover { background: rgba(255,255,255,.12); color: #e8edf4; }
+
+    /* ── RESULT PANEL ── */
+    .result-panel {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius-lg);
+      padding: 32px 36px;
+      min-height: 360px;
+      display: flex; flex-direction: column;
+    }
+    .r-idle { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; opacity: .3; }
+    .r-idle svg { width: 42px; height: 42px; }
+    .r-idle p { font-size: .85rem; color: #8fa3b8; line-height: 1.6; }
+    .r-loading { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 18px; flex: 1; }
+    .r-loading.on { display: flex; }
+    .spinner { width: 32px; height: 32px; border: 2px solid rgba(255,255,255,.1); border-top-color: #7ec8e3; border-radius: 50%; animation: spin .75s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-steps { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+    .loading-step { font-size: .84rem; color: rgba(143,163,184,.4); transition: color .3s; }
+    .loading-step.active { color: #7ec8e3; }
+    .r-output { display: none; flex-direction: column; gap: 0; }
+    .r-output.on { display: flex; }
+    .r-block { border-radius: var(--radius); padding: 22px 24px; margin-bottom: 14px; opacity: 0; animation: blockIn .35s ease forwards; position: relative; }
+    .r-block:nth-child(2) { animation-delay: .08s; }
+    .r-block:nth-child(3) { animation-delay: .16s; }
+    @keyframes blockIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .r-block.summary { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); }
+    .r-block.opps    { background: rgba(20,119,160,.12); border: 1px solid rgba(126,200,227,.2); }
+    .r-block.impact  { background: rgba(22,163,74,.1);  border: 1px solid rgba(22,163,74,.25); }
+    .r-block-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .r-block-kicker { display: flex; align-items: center; gap: 8px; font-size: .68rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
+    .r-block.summary .r-block-kicker { color: #8fa3b8; }
+    .r-block.opps    .r-block-kicker { color: #7ec8e3; }
+    .r-block.impact  .r-block-kicker { color: #86efac; }
+    .r-block-icon { width: 26px; height: 26px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: .82rem; flex-shrink: 0; }
+    .r-block.summary .r-block-icon { background: rgba(255,255,255,.08); }
+    .r-block.opps    .r-block-icon { background: rgba(126,200,227,.15); }
+    .r-block.impact  .r-block-icon { background: rgba(22,163,74,.15); }
+    .copy-btn { background: none; border: none; cursor: pointer; color: rgba(143,163,184,.45); font-size: .72rem; display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: var(--radius-sm); transition: all .15s; font-family: 'DM Sans', sans-serif; }
+    .copy-btn:hover { color: #7ec8e3; background: rgba(255,255,255,.06); }
+    .copy-btn.copied { color: #86efac; }
+    .r-text { font-size: .9rem; color: #c8d6e4; line-height: 1.75; font-weight: 300; }
+    .opp-list { display: flex; flex-direction: column; gap: 10px; }
+    .opp-item { display: flex; gap: 12px; align-items: flex-start; padding: 11px 13px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06); border-radius: var(--radius-sm); }
+    .opp-num { width: 22px; height: 22px; border-radius: 50%; background: rgba(126,200,227,.2); border: 1px solid rgba(126,200,227,.3); display: flex; align-items: center; justify-content: center; font-size: .68rem; font-weight: 500; color: #7ec8e3; flex-shrink: 0; margin-top: 1px; }
+    .opp-text { font-size: .88rem; color: #c8d6e4; line-height: 1.65; font-weight: 300; }
+    .impact-text { font-size: .9rem; color: #bbf7d0; line-height: 1.75; font-weight: 300; }
+    .ctx-bar { display: none; flex-wrap: wrap; gap: 7px; margin-bottom: 18px; }
+    .ctx-bar.on { display: flex; }
+    .ctx-chip { display: inline-flex; align-items: center; gap: 5px; background: rgba(20,119,160,.2); border: 1px solid rgba(126,200,227,.3); border-radius: 100px; padding: 4px 12px; font-size: .7rem; color: #7ec8e3; font-weight: 500; }
+    .ctx-chip span { opacity: .55; font-weight: 300; }
+
+    /* follow-up */
+    .followup-section { display: none; flex-direction: column; gap: 10px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.07); margin-top: 4px; }
+    .followup-section.on { display: flex; }
+    .followup-label { font-size: .73rem; color: rgba(143,163,184,.6); }
+    .quick-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .qchip { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 100px; padding: 6px 13px; font-size: .78rem; color: rgba(200,214,228,.7); cursor: pointer; transition: all .15s; font-family: 'DM Sans', sans-serif; }
+    .qchip:hover { background: rgba(20,119,160,.25); border-color: rgba(126,200,227,.4); color: #7ec8e3; }
+    .followup-row { display: flex; gap: 9px; margin-top: 2px; }
+    .followup-input { flex: 1; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius-sm); color: #e8edf4; padding: 10px 13px; font-size: .87rem; font-family: 'DM Sans', sans-serif; font-weight: 300; outline: none; transition: border-color .15s; }
+    .followup-input::placeholder { color: rgba(143,163,184,.35); }
+    .followup-input:focus { border-color: rgba(126,200,227,.45); }
+    .btn-refine { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.14); color: #e8edf4; padding: 10px 18px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: .84rem; cursor: pointer; white-space: nowrap; transition: background .15s; }
+    .btn-refine:hover:not(:disabled) { background: rgba(255,255,255,.16); }
+    .btn-refine:disabled { opacity: .35; cursor: not-allowed; }
+    .r-error { display: none; padding: 13px 15px; background: rgba(220,70,60,.1); border: 1px solid rgba(220,70,60,.25); border-radius: var(--radius-sm); font-size: .84rem; color: #f4a8a0; line-height: 1.55; margin-top: 12px; }
+    .r-error.on { display: block; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--navy); border-top: 1px solid rgba(255,255,255,.07); padding: 36px 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .footer-logo { font-weight: 500; font-size: 1rem; color: rgba(255,255,255,.85); letter-spacing: .04em; }
+    .footer-logo b { color: #7ec8e3; font-weight: 500; }
+    footer .f-copy  { font-size: .78rem; color: rgba(255,255,255,.3); }
+    footer .f-stack { font-size: .72rem; color: rgba(255,255,255,.22); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      nav { padding: 0 24px; }
+      .nav-links, .btn-nav { display: none; }
+      .hero { padding: 60px 24px 56px; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-card { display: none; }
+      .section-wrap { padding: 60px 24px; }
+      .services-grid { grid-template-columns: 1fr 1fr; border-radius: var(--radius); }
+      .sc:nth-child(2) { border-right: none; }
+      .sc:nth-child(1), .sc:nth-child(2) { border-bottom: 1px solid var(--border); }
+      .uc-grid { grid-template-columns: 1fr; }
+      .result-panel { padding: 24px; }
+      footer { padding: 28px 24px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <svg class="logo-mark" viewBox="0 0 32 32" fill="none">
+      <polygon points="16,2 30,9.5 30,22.5 16,30 2,22.5 2,9.5" fill="none" stroke="#1477a0" stroke-width="1.8"/>
+      <polygon points="16,8 24,12.5 24,19.5 16,24 8,19.5 8,12.5" fill="none" stroke="#1477a0" stroke-width="1" opacity="0.4"/>
+      <circle cx="16" cy="16" r="3" fill="#1477a0"/>
+    </svg>
+    <span class="logo-name">CHIA<b>CON</b></span>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#usecases">Use Cases</a></li>
+      <li><a href="#demo">AI Demo</a></li>
+    </ul>
+    <a href="#demo" class="btn-nav">Try AI Demo</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">IT Services &amp; AI Consulting</div>
+      <h1>Your Vision.<br/><em>Our Mission.</em></h1>
+      <p class="hero-desc">Chiacon partners with organisations to deliver tailored solutions in data analytics, robotic process automation, quality assurance, and digital project delivery — engineered to create measurable business value.</p>
+      <div class="hero-actions">
+        <a href="#demo" class="btn-primary">Explore AI Demo</a>
+        <a href="#services" class="btn-outline">Our Services</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <p class="hero-card-label">Core Capabilities</p>
+      <div class="pill-grid">
+        <div class="pill"><div class="pill-icon">📊</div><span class="pill-name">Analytics</span><span class="pill-sub">Data-driven decisions</span></div>
+        <div class="pill"><div class="pill-icon">⚙️</div><span class="pill-name">RPA</span><span class="pill-sub">Process automation</span></div>
+        <div class="pill"><div class="pill-icon">✅</div><span class="pill-name">Quality Assurance</span><span class="pill-sub">End-to-end QA</span></div>
+        <div class="pill"><div class="pill-icon">🚀</div><span class="pill-name">Project Catalysts</span><span class="pill-sub">Accelerated delivery</span></div>
+      </div>
+      <p class="hero-card-foot"><span>Building Trust, Delivering Value</span> — committed to being the most trusted partner for customers, employees, and collaborators.</p>
+    </div>
+  </div>
+</header>
+
+<!-- SERVICES -->
+<section class="services-bg" id="services">
+  <div class="section-wrap">
+    <div class="section-header">
+      <p class="section-kicker">What We Do</p>
+      <h2 class="section-title">Four pillars. One trusted partner.</h2>
+      <p class="section-body">Every Chiacon engagement is uniquely crafted around your goals — close collaboration, transparent delivery, and tangible outcomes.</p>
+    </div>
+    <div class="services-grid">
+      <div class="sc"><div class="sc-icon">📊</div><h3 class="sc-title">Analytics</h3><p class="sc-body">Transform raw business data into actionable intelligence. We design reporting pipelines, dashboards, and models that surface insights leaders need to act confidently.</p></div>
+      <div class="sc"><div class="sc-icon">⚙️</div><h3 class="sc-title">RPA</h3><p class="sc-body">Identify and automate high-volume, rules-based processes across finance, operations, and HR — freeing your teams for work that requires human judgement.</p></div>
+      <div class="sc"><div class="sc-icon">✅</div><h3 class="sc-title">Quality Assurance</h3><p class="sc-body">Embed quality at every stage of your software and data lifecycle. Our QA frameworks reduce defects, accelerate releases, and protect your end-user experience.</p></div>
+      <div class="sc" style="border-right:none"><div class="sc-icon">🚀</div><h3 class="sc-title">Project Catalysts</h3><p class="sc-body">Experienced delivery leads who unlock stalled initiatives, structure ambiguous programmes, and accelerate outcomes — without the overhead of a large consulting firm.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section id="usecases">
+  <div class="section-wrap">
+    <div class="section-header">
+      <p class="section-kicker">AI Use Cases</p>
+      <h2 class="section-title">Where AI creates the most impact.</h2>
+      <p class="section-body">Chiacon applies AI thoughtfully — focused on problems where automation and intelligence can replace manual effort and improve outcomes.</p>
+    </div>
+    <div class="uc-grid">
+      <div class="uc"><span class="uc-tag">Analytics</span><h3 class="uc-title">Automated Reporting &amp; Business Intelligence</h3><p class="uc-body">Organisations spend disproportionate time compiling reports manually. AI-powered pipelines eliminate this cycle — ingesting, cleaning, and visualising data automatically.</p><div class="uc-detail"><strong>How Chiacon helps:</strong> End-to-end pipelines with live dashboards and natural-language summaries generated automatically each reporting cycle.</div></div>
+      <div class="uc"><span class="uc-tag">RPA</span><h3 class="uc-title">Intelligent Process Automation</h3><p class="uc-body">Invoice processing, onboarding, reconciliation — high-volume tasks that drain skilled staff. RPA augmented with AI handles them reliably at scale.</p><div class="uc-detail"><strong>How Chiacon helps:</strong> Workflow audits, automation opportunity mapping, and bots that handle exceptions intelligently — not just rules-based paths.</div></div>
+      <div class="uc"><span class="uc-tag">QA + Delivery</span><h3 class="uc-title">AI-Assisted Quality &amp; Delivery</h3><p class="uc-body">Testing cycles that delay releases and invisible project dependencies — AI surfaces both proactively, reducing costly rework late in the delivery cycle.</p><div class="uc-detail"><strong>How Chiacon helps:</strong> AI-generated test cases and dependency risk modelling integrated into your existing workflows without disruption.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ DEMO ════ -->
+<section class="demo-bg" id="demo">
+  <div class="section-wrap">
+    <div class="section-header">
+      <p class="section-kicker">Live AI Demo</p>
+      <h2 class="section-title">AI Use Case Generator</h2>
+      <p class="section-body">Answer a few quick questions — the more context you give, the sharper the output. Choose how you'd like to build that context below.</p>
+    </div>
+
+    <!-- MODE TOGGLE -->
+    <div class="mode-toggle-bar">
+      <div class="mode-label-group">
+        <span class="mode-label active" id="lbl-all">All at once</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="mode-toggle" onchange="switchMode()"/>
+          <div class="toggle-track"><div class="toggle-thumb"></div></div>
+        </label>
+        <span class="mode-label" id="lbl-wiz">Step by step</span>
+      </div>
+      <span class="mode-hint">Step-by-step guides you through each question one at a time</span>
+    </div>
+
+    <!-- ALL AT ONCE MODE -->
+    <div id="all-mode-wrap">
+      <div class="demo-card">
+        <div class="all-mode">
+          <p class="all-mode-title">Build Your Context</p>
+
+          <div class="chip-row">
+            <div class="chip-row-label">Industry <span class="req">*</span></div>
+            <div class="all-chips" data-group="industry">
+              <div class="all-chip" data-value="FMCG / Consumer Goods">FMCG</div>
+              <div class="all-chip" data-value="Financial Services">Finance</div>
+              <div class="all-chip" data-value="Logistics & Supply Chain">Logistics</div>
+              <div class="all-chip" data-value="Healthcare">Healthcare</div>
+              <div class="all-chip" data-value="Retail & E-commerce">Retail</div>
+              <div class="all-chip" data-value="Manufacturing">Manufacturing</div>
+              <div class="all-chip" data-value="Technology">Technology</div>
+              <div class="all-chip" data-value="Education">Education</div>
+              <div class="all-chip other-all" data-value="__other__">Other…</div>
+            </div>
+            <input class="all-other-input" id="other-industry" placeholder="Type your industry…"/>
+          </div>
+
+          <div class="chip-row">
+            <div class="chip-row-label">Company Size</div>
+            <div class="all-chips" data-group="size">
+              <div class="all-chip" data-value="early-stage startup (under 50 people)">Startup</div>
+              <div class="all-chip" data-value="growing SME (50–500 people)">SME</div>
+              <div class="all-chip" data-value="mid-market (500–5,000 people)">Mid-market</div>
+              <div class="all-chip" data-value="large enterprise (5,000+ people)">Enterprise</div>
+            </div>
+          </div>
+
+          <div class="chip-row">
+            <div class="chip-row-label">Department</div>
+            <div class="all-chips" data-group="dept">
+              <div class="all-chip" data-value="Finance & Accounting">Finance</div>
+              <div class="all-chip" data-value="Operations">Operations</div>
+              <div class="all-chip" data-value="Sales & Revenue">Sales</div>
+              <div class="all-chip" data-value="HR & People">HR</div>
+              <div class="all-chip" data-value="IT & Engineering">IT</div>
+              <div class="all-chip" data-value="Customer Support">Support</div>
+              <div class="all-chip" data-value="Supply Chain">Supply Chain</div>
+              <div class="all-chip other-all" data-value="__other__">Other…</div>
+            </div>
+            <input class="all-other-input" id="other-dept" placeholder="Type your department…"/>
+          </div>
+
+          <div class="chip-row">
+            <div class="chip-row-label">Current Approach</div>
+            <div class="all-chips" data-group="tools">
+              <div class="all-chip" data-value="mostly manual / spreadsheet-based">Manual / Excel</div>
+              <div class="all-chip" data-value="legacy ERP system">Legacy ERP</div>
+              <div class="all-chip" data-value="modern SaaS tools">Modern SaaS</div>
+              <div class="all-chip" data-value="mix of old and new systems">Mixed Systems</div>
+              <div class="all-chip" data-value="no formal system yet">No Formal System</div>
+            </div>
+          </div>
+
+          <div>
+            <label class="chip-row-label">Describe the Business Problem <span class="req">*</span></label>
+            <textarea id="all-problem" class="all-textarea"
+              placeholder="The more specific, the better. Describe what's going wrong, how often, and what it costs you.&#10;&#10;e.g. Our finance team manually consolidates reports from 12 branches every month. It takes 2 full days and errors are frequent."></textarea>
+            <p class="all-f-hint" style="margin-top:7px">Ctrl + Enter to generate</p>
+          </div>
+
+          <div class="all-btn-row">
+            <button class="btn-gen-all" id="btn-gen-all" onclick="handleGenerateAll()">
+              <span id="btn-gen-all-label">Generate AI Analysis</span>
+            </button>
+            <button class="btn-reset-all" onclick="resetAll()">↺ Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WIZARD MODE -->
+    <div id="wiz-mode-wrap" style="display:none">
+      <div class="demo-card">
+        <!-- progress bar -->
+        <div class="wiz-progress-bar">
+          <div class="wiz-progress-fill" id="wiz-fill"></div>
+        </div>
+        <div class="wiz-progress-meta">
+          <div class="wiz-step-dots" id="wiz-dots"></div>
+          <span class="wiz-pct" id="wiz-pct">0% complete</span>
+        </div>
+
+        <!-- slides -->
+        <div class="wiz-slides" id="wiz-slides"></div>
+
+        <!-- footer nav -->
+        <div class="wiz-footer">
+          <button class="wiz-skip" id="wiz-skip-btn" onclick="wizSkip()">Skip this question</button>
+          <div class="wiz-nav-right">
+            <button class="wiz-back" id="wiz-back-btn" onclick="wizBack()" disabled>← Back</button>
+            <button class="wiz-next" id="wiz-next-btn" onclick="wizNext()">Next →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT PANEL (shared) -->
+    <div class="result-panel" id="result-panel">
+      <div class="r-idle" id="r-idle">
+        <svg viewBox="0 0 42 42" fill="none">
+          <rect x="3" y="3" width="36" height="36" rx="8" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M11 21h20M11 14h12M11 28h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="31" cy="14" r="4" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <p>Select your context and describe your challenge.<br/>The AI will return a structured analysis tailored to your situation.</p>
+      </div>
+      <div class="r-loading" id="r-loading">
+        <div class="spinner"></div>
+        <div class="loading-steps">
+          <p class="loading-step" id="ls1">Reading your business context…</p>
+          <p class="loading-step" id="ls2">Identifying AI opportunities…</p>
+          <p class="loading-step" id="ls3">Estimating business impact…</p>
+        </div>
+      </div>
+      <div class="r-output" id="r-output">
+        <div class="ctx-bar" id="ctx-bar"></div>
+        <div class="r-block summary" id="block-1">
+          <div class="r-block-header">
+            <div class="r-block-kicker"><div class="r-block-icon">📋</div>Problem Summary</div>
+            <button class="copy-btn" onclick="copyBlock('out-summary',this)">Copy</button>
+          </div>
+          <p class="r-text" id="out-summary"></p>
+        </div>
+        <div class="r-block opps" id="block-2">
+          <div class="r-block-header">
+            <div class="r-block-kicker"><div class="r-block-icon">🚀</div>AI Opportunities</div>
+            <button class="copy-btn" onclick="copyBlock('out-opps-plain',this)">Copy</button>
+          </div>
+          <div class="opp-list" id="out-opps"></div>
+          <div id="out-opps-plain" style="display:none"></div>
+        </div>
+        <div class="r-block impact" id="block-3">
+          <div class="r-block-header">
+            <div class="r-block-kicker"><div class="r-block-icon">📈</div>Expected Business Impact</div>
+            <button class="copy-btn" onclick="copyBlock('out-impact',this)">Copy</button>
+          </div>
+          <p class="impact-text" id="out-impact"></p>
+        </div>
+        <div class="followup-section" id="followup-section">
+          <p class="followup-label">Refine or dig deeper</p>
+          <div class="quick-chips">
+            <div class="qchip" onclick="sendQuick('Focus specifically on cost reduction')">Cost reduction</div>
+            <div class="qchip" onclick="sendQuick('What would implementation look like in practice?')">Implementation steps</div>
+            <div class="qchip" onclick="sendQuick('Which opportunity should we prioritise first and why?')">Prioritise one</div>
+            <div class="qchip" onclick="sendQuick('What are the risks or challenges we should anticipate?')">Risks & challenges</div>
+            <div class="qchip" onclick="sendQuick('How long would this typically take to deliver?')">Timeline</div>
+          </div>
+          <div class="followup-row">
+            <input id="inp-followup" class="followup-input" type="text" placeholder="Or ask your own follow-up…"/>
+            <button id="btn-refine" class="btn-refine" onclick="handleFollowup()">Ask →</button>
+          </div>
+        </div>
+        <div class="r-error" id="r-error-inline"></div>
+      </div>
+      <div class="r-error" id="r-error"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">CHIA<b>CON</b></div>
+  <p class="f-copy">IT Services &amp; AI Consulting · Building Trust, Delivering Value</p>
+  <p class="f-stack">Powered by Claude AI · Single-file HTML · Deployable anywhere</p>
+</footer>
+
+<script>
+/* ════ WIZARD DEFINITION ════ */
+const WIZARD_STEPS = [
+  {
+    key: 'industry',
+    question: "What industry does your business operate in?",
+    sub: "This helps tailor the AI opportunities to your sector's specific challenges.",
+    options: ['FMCG / Consumer Goods','Financial Services','Logistics & Supply Chain','Healthcare','Retail & E-commerce','Manufacturing','Technology','Education'],
+    required: true,
+    type: 'chips'
+  },
+  {
+    key: 'size',
+    question: "How large is your organisation?",
+    sub: "Company scale affects which solutions are practical and cost-effective.",
+    options: ['Early-stage startup (under 50 people)','Growing SME (50–500 people)','Mid-market (500–5,000 people)','Large enterprise (5,000+ people)'],
+    required: false,
+    type: 'chips'
+  },
+  {
+    key: 'dept',
+    question: "Which department is most affected by this problem?",
+    sub: "We'll focus the AI opportunities on what matters most to that team.",
+    options: ['Finance & Accounting','Operations','Sales & Revenue','HR & People','IT & Engineering','Customer Support','Supply Chain'],
+    required: false,
+    type: 'chips'
+  },
+  {
+    key: 'tools',
+    question: "How does your team currently handle this area?",
+    sub: "Knowing your starting point helps us recommend practical, achievable solutions.",
+    options: ['Mostly manual / spreadsheet-based','Legacy ERP system','Modern SaaS tools','Mix of old and new systems','No formal system yet'],
+    required: false,
+    type: 'chips'
+  },
+  {
+    key: 'problem',
+    question: "Describe the business problem you're trying to solve.",
+    sub: "Be as specific as you can — what's going wrong, how often, and what it costs you.",
+    required: true,
+    type: 'textarea',
+    placeholder: "e.g. Our finance team manually consolidates reports from 12 branches every month. It takes 2 full days and errors are frequent. Leadership never has real-time visibility."
+  }
+];
+
+/* ════ STATE ════ */
+let wizStep   = 0;
+let wizMode   = false; // false = all-at-once
+let wizAnswers = {}; // { key: value }
+let conversation = [];
+let hasResult    = false;
+
+// All-at-once context state
+const allCtx = { industry:'', size:'', dept:'', tools:'' };
+
+/* ════ SYSTEM PROMPT ════ */
+const SYSTEM = `You are a senior AI consultant at Chiacon, an IT services firm specialising in Analytics, RPA, QA, and Project Delivery.
+
+Respond ONLY with a valid JSON object — no markdown, no code fences, no extra text.
+
+{
+  "summary": "2-3 sentences restating the core business problem precisely. Reference the industry/department context if provided.",
+  "opportunities": [
+    "Opportunity 1: one sentence on what the solution is, one sentence on how it addresses this specific problem.",
+    "Opportunity 2: same format.",
+    "Opportunity 3: same format."
+  ],
+  "impact": "2-3 sentences on realistic business outcomes specific to this problem. Reference the industry, size, and department context. Be grounded, not generic."
+}
+
+For follow-ups: refine and update the JSON based on the new question. Keep all three keys populated.`;
+
+/* ════ MODE SWITCH ════ */
+function switchMode() {
+  wizMode = document.getElementById('mode-toggle').checked;
+  document.getElementById('all-mode-wrap').style.display = wizMode ? 'none'  : 'block';
+  document.getElementById('wiz-mode-wrap').style.display = wizMode ? 'block' : 'none';
+  document.getElementById('lbl-all').classList.toggle('active', !wizMode);
+  document.getElementById('lbl-wiz').classList.toggle('active',  wizMode);
+  if (wizMode) initWizard();
+  showState('idle');
+}
+
+/* ════ WIZARD INIT ════ */
+function initWizard() {
+  wizStep    = 0;
+  wizAnswers = {};
+  buildSlides();
+  updateWizUI();
+}
+
+function buildSlides() {
+  const container = document.getElementById('wiz-slides');
+  container.innerHTML = '';
+
+  // dots
+  const dotsEl = document.getElementById('wiz-dots');
+  dotsEl.innerHTML = '';
+  WIZARD_STEPS.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'wiz-dot';
+    d.id = `dot-${i}`;
+    dotsEl.appendChild(d);
+  });
+
+  WIZARD_STEPS.forEach((step, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'wiz-slide' + (i === 0 ? ' active' : '');
+    slide.id = `slide-${i}`;
+
+    let inner = `
+      <div class="wiz-q-num">Question ${i+1} of ${WIZARD_STEPS.length}${step.required ? ' <span style="color:#7ec8e3">·  Required</span>' : ''}</div>
+      <div class="wiz-q-text">${step.question}</div>
+      ${step.sub ? `<div class="wiz-q-sub">${step.sub}</div>` : ''}
+    `;
+
+    if (step.type === 'chips') {
+      inner += `<div class="wiz-chips" id="wchips-${i}">`;
+      step.options.forEach(opt => {
+        inner += `<div class="wiz-chip" data-step="${i}" data-value="${opt}" onclick="wizSelectChip(this)">${opt}</div>`;
+      });
+      // Other option
+      inner += `<div class="wiz-chip other-chip" data-step="${i}" data-value="__other__" onclick="wizSelectChip(this)">Other…</div>`;
+      inner += `</div>`;
+      inner += `<input class="wiz-other-input" id="wiz-other-${i}" placeholder="Type your own answer…" oninput="wizOtherInput(${i})"/>`;
+    } else if (step.type === 'textarea') {
+      inner += `<textarea class="wiz-textarea" id="wiz-ta-${i}" placeholder="${step.placeholder || ''}" oninput="wizTaInput(${i})"></textarea>`;
+    }
+
+    slide.innerHTML = inner;
+    container.appendChild(slide);
+  });
+}
+
+/* ── Chip select in wizard ── */
+function wizSelectChip(el) {
+  const stepIdx = parseInt(el.dataset.step);
+  // deselect all in this step
+  document.querySelectorAll(`#wchips-${stepIdx} .wiz-chip`).forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+
+  const otherInput = document.getElementById(`wiz-other-${stepIdx}`);
+  if (el.dataset.value === '__other__') {
+    otherInput.classList.add('visible');
+    otherInput.focus();
+    wizAnswers[WIZARD_STEPS[stepIdx].key] = otherInput.value.trim() || '';
+  } else {
+    otherInput.classList.remove('visible');
+    wizAnswers[WIZARD_STEPS[stepIdx].key] = el.dataset.value;
+  }
+  // auto-advance on chip select if not last step and not "Other"
+  if (el.dataset.value !== '__other__' && stepIdx < WIZARD_STEPS.length - 1) {
+    setTimeout(() => wizNext(), 350);
+  }
+}
+
+function wizOtherInput(stepIdx) {
+  const val = document.getElementById(`wiz-other-${stepIdx}`).value.trim();
+  wizAnswers[WIZARD_STEPS[stepIdx].key] = val;
+}
+
+function wizTaInput(stepIdx) {
+  const val = document.getElementById(`wiz-ta-${stepIdx}`).value.trim();
+  wizAnswers[WIZARD_STEPS[stepIdx].key] = val;
+}
+
+/* ── Wizard navigation ── */
+function wizNext() {
+  const step = WIZARD_STEPS[wizStep];
+  // validate required
+  if (step.required && !wizAnswers[step.key]) {
+    if (step.type === 'textarea') {
+      const ta = document.getElementById(`wiz-ta-${wizStep}`);
+      ta.style.borderColor = 'rgba(220,80,60,.65)'; ta.focus();
+      setTimeout(() => ta.style.borderColor = '', 1600);
+    }
+    return;
+  }
+  // last step = generate
+  if (wizStep === WIZARD_STEPS.length - 1) {
+    handleGenerateWiz();
+    return;
+  }
+  goToSlide(wizStep + 1);
+}
+
+function wizBack() {
+  if (wizStep > 0) goToSlide(wizStep - 1);
+}
+
+function wizSkip() {
+  if (wizStep === WIZARD_STEPS.length - 1) return; // can't skip last
+  wizAnswers[WIZARD_STEPS[wizStep].key] = ''; // clear
+  goToSlide(wizStep + 1);
+}
+
+function goToSlide(next) {
+  const currentEl = document.getElementById(`slide-${wizStep}`);
+  const nextEl    = document.getElementById(`slide-${next}`);
+  const forward   = next > wizStep;
+
+  currentEl.classList.remove('active');
+  currentEl.classList.add('exit-left');
+  setTimeout(() => currentEl.classList.remove('exit-left'), 350);
+
+  nextEl.style.transform = forward ? 'translateX(48px)' : 'translateX(-48px)';
+  nextEl.style.opacity   = '0';
+  nextEl.classList.add('active');
+  setTimeout(() => { nextEl.style.transform = ''; nextEl.style.opacity = ''; }, 20);
+
+  wizStep = next;
+  updateWizUI();
+}
+
+function updateWizUI() {
+  const total   = WIZARD_STEPS.length;
+  const pct     = Math.round((wizStep / total) * 100);
+  document.getElementById('wiz-fill').style.width = pct + '%';
+  document.getElementById('wiz-pct').textContent  = pct + '% complete';
+
+  // dots
+  WIZARD_STEPS.forEach((_, i) => {
+    const d = document.getElementById(`dot-${i}`);
+    d.className = 'wiz-dot' + (i < wizStep ? ' done' : i === wizStep ? ' active' : '');
+  });
+
+  // back btn
+  document.getElementById('wiz-back-btn').disabled = wizStep === 0;
+
+  // next btn
+  const nextBtn  = document.getElementById('wiz-next-btn');
+  const isLast   = wizStep === total - 1;
+  const skipBtn  = document.getElementById('wiz-skip-btn');
+
+  if (isLast) {
+    nextBtn.textContent = 'Generate Analysis ✦';
+    nextBtn.classList.add('generate-btn');
+    skipBtn.style.visibility = 'hidden';
+  } else {
+    nextBtn.innerHTML = 'Next →';
+    nextBtn.classList.remove('generate-btn');
+    skipBtn.style.visibility = 'visible';
+  }
+}
+
+/* ════ ALL-AT-ONCE: chip wiring ════ */
+document.querySelectorAll('.all-chips').forEach(group => {
+  group.addEventListener('click', e => {
+    const chip = e.target.closest('.all-chip');
+    if (!chip) return;
+    const groupName = group.dataset.group;
+
+    // deselect same group
+    group.querySelectorAll('.all-chip').forEach(c => c.classList.remove('selected'));
+    chip.classList.add('selected');
+
+    const otherKey = `other-${groupName}`;
+    const otherEl  = document.getElementById(otherKey);
+
+    if (chip.dataset.value === '__other__') {
+      if (otherEl) { otherEl.classList.add('visible'); otherEl.focus(); }
+      allCtx[groupName] = otherEl ? otherEl.value.trim() : '';
+    } else {
+      if (otherEl) otherEl.classList.remove('visible');
+      allCtx[groupName] = chip.dataset.value;
+    }
+  });
+});
+
+// live update "other" fields
+['other-industry','other-dept'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => {
+    const group = id.replace('other-','');
+    allCtx[group] = el.value.trim();
+  });
+});
+
+/* ════ BUILD MESSAGE ════ */
+function buildMessage(answers) {
+  const lines = [];
+  if (answers.industry) lines.push(`Industry: ${answers.industry}`);
+  if (answers.size)     lines.push(`Company size: ${answers.size}`);
+  if (answers.dept)     lines.push(`Department: ${answers.dept}`);
+  if (answers.tools)    lines.push(`Current approach: ${answers.tools}`);
+  if (answers.problem)  lines.push(`Business Problem: ${answers.problem}`);
+  return lines.join('\n');
+}
+
+/* ════ API ════ */
+async function callClaude(messages) {
+  // We changed this URL to point to your new Vercel backend!
+  const res = await fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages })
+  });
+  
+  if (!res.ok) { 
+    const b = await res.json().catch(()=>({})); 
+    throw new Error(b.error || `Error ${res.status}`); 
+  }
+  
+  const data  = await res.json();
+  const raw   = (data.content||[]).map(b=>b.text||'').join('').trim();
+  const clean = raw.replace(/^```(?:json)?\s*|\s*```$/gm,'').trim();
+  return JSON.parse(clean);
+}
+
+/* ════ GENERATE ════ */
+async function runGenerate(answers) {
+  const content = buildMessage(answers);
+  conversation  = [{ role: 'user', content }];
+
+  setBusy(true);
+  showState('loading');
+  startLoadingAnim();
+  document.getElementById('followup-section').classList.remove('on');
+
+  try {
+    const parsed = await callClaude(conversation);
+    conversation.push({ role: 'assistant', content: JSON.stringify(parsed) });
+    stopLoadingAnim();
+    await renderResult(parsed, answers);
+  } catch(err) {
+    stopLoadingAnim(); showState('idle');
+    const e = document.getElementById('r-error');
+    e.textContent = 'Something went wrong: ' + err.message; e.classList.add('on');
+    console.error(err);
+  } finally { setBusy(false); }
+}
+
+function handleGenerateAll() {
+  const problem = document.getElementById('all-problem').value.trim();
+  if (!problem) {
+    const ta = document.getElementById('all-problem');
+    ta.style.borderColor='rgba(220,80,60,.65)'; ta.focus();
+    setTimeout(()=>ta.style.borderColor='',1800); return;
+  }
+  runGenerate({ ...allCtx, problem });
+}
+
+function handleGenerateWiz() {
+  const problem = wizAnswers['problem'] || '';
+  if (!problem) {
+    const ta = document.getElementById(`wiz-ta-${wizStep}`);
+    if (ta) { ta.style.borderColor='rgba(220,80,60,.65)'; ta.focus(); setTimeout(()=>ta.style.borderColor='',1600); }
+    return;
+  }
+  runGenerate(wizAnswers);
+}
+
+/* ════ RENDER RESULT ════ */
+async function renderResult(d, answers) {
+  // context chips bar
+  const bar = document.getElementById('ctx-bar');
+  bar.innerHTML = '';
+  const labels = { industry:'Industry', size:'Size', dept:'Department', tools:'Approach' };
+  Object.entries(labels).forEach(([k,label]) => {
+    const v = answers[k];
+    if (v) bar.innerHTML += `<div class="ctx-chip"><span>${label}</span> ${v}</div>`;
+  });
+  bar.classList.toggle('on', bar.children.length > 0);
+
+  // reset block animations
+  ['block-1','block-2','block-3'].forEach((id,i) => {
+    const el=document.getElementById(id);
+    el.style.animation='none'; void el.offsetHeight;
+    el.style.animation=''; el.style.animationDelay=(i*.08)+'s';
+  });
+
+  showState('output');
+
+  await typewrite(document.getElementById('out-summary'), d.summary||'', 12);
+
+  const oppList = document.getElementById('out-opps');
+  oppList.innerHTML = '';
+  let oppPlain = '';
+  (d.opportunities||[]).forEach((op,i) => {
+    oppPlain += `${i+1}. ${op}\n`;
+    const item = document.createElement('div');
+    item.className = 'opp-item';
+    item.style.cssText = `opacity:0;animation:blockIn .3s ease ${.1+i*.1}s forwards`;
+    item.innerHTML = `<div class="opp-num">${i+1}</div><div class="opp-text"></div>`;
+    oppList.appendChild(item);
+    setTimeout(()=>typewrite(item.querySelector('.opp-text'),op,10),(i+1)*120);
+  });
+  document.getElementById('out-opps-plain').textContent = oppPlain.trim();
+
+  setTimeout(()=>typewrite(document.getElementById('out-impact'),d.impact||'',12),350);
+
+  document.getElementById('followup-section').classList.add('on');
+  hasResult = true;
+}
+
+/* ════ FOLLOW-UP ════ */
+async function handleFollowup() {
+  const input = document.getElementById('inp-followup');
+  const text  = input.value.trim();
+  if (!text || !hasResult) return;
+  conversation.push({ role:'user', content: text });
+  input.value = '';
+  setBusy(true); showState('loading'); startLoadingAnim();
+  try {
+    const parsed = await callClaude(conversation);
+    conversation.push({ role:'assistant', content: JSON.stringify(parsed) });
+    stopLoadingAnim();
+    // preserve ctx bar — pass empty answers so bar isn't wiped
+    await renderResult(parsed, {});
+    // restore ctx bar content (don't clear)
+  } catch(err) {
+    stopLoadingAnim(); showState('output');
+    const ei=document.getElementById('r-error-inline');
+    ei.textContent='Follow-up failed: '+err.message; ei.style.display='block';
+    console.error(err);
+  } finally { setBusy(false); }
+}
+
+function sendQuick(text) {
+  document.getElementById('inp-followup').value = text;
+  handleFollowup();
+}
+
+/* ════ RESET ════ */
+function resetAll() {
+  // all-at-once
+  document.querySelectorAll('.all-chip').forEach(c=>c.classList.remove('selected'));
+  ['other-industry','other-dept'].forEach(id=>{
+    const el=document.getElementById(id); if(el){el.value='';el.classList.remove('visible');}
+  });
+  const ta=document.getElementById('all-problem'); if(ta) ta.value='';
+  Object.keys(allCtx).forEach(k=>allCtx[k]='');
+  // wizard
+  if (wizMode) initWizard();
+  // shared
+  conversation=[]; hasResult=false;
+  showState('idle');
+  document.getElementById('r-error').classList.remove('on');
+  document.getElementById('followup-section').classList.remove('on');
+  document.getElementById('ctx-bar').classList.remove('on');
+}
+
+/* ════ UI HELPERS ════ */
+function showState(s) {
+  document.getElementById('r-idle').style.display    = s==='idle'    ? 'flex' : 'none';
+  document.getElementById('r-loading').classList.toggle('on', s==='loading');
+  document.getElementById('r-output').classList.toggle('on',  s==='output');
+  document.getElementById('r-error').classList.remove('on');
+}
+
+function setBusy(busy) {
+  ['btn-gen-all','wiz-next-btn','btn-refine'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.disabled=busy;
+  });
+  const lbl=document.getElementById('btn-gen-all-label');
+  if(lbl) lbl.textContent = busy ? 'Analysing…' : 'Generate AI Analysis';
+}
+
+let loadingTimer=null;
+function startLoadingAnim() {
+  const ids=['ls1','ls2','ls3']; let i=0;
+  ids.forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById(ids[0]).classList.add('active');
+  loadingTimer=setInterval(()=>{
+    document.getElementById(ids[i]).classList.remove('active');
+    i=(i+1)%ids.length;
+    document.getElementById(ids[i]).classList.add('active');
+  },900);
+}
+function stopLoadingAnim() {
+  clearInterval(loadingTimer);
+  ['ls1','ls2','ls3'].forEach(id=>document.getElementById(id).classList.remove('active'));
+}
+
+function typewrite(el, text, speed=14) {
+  return new Promise(resolve=>{
+    el.textContent=''; let i=0;
+    const tick=()=>{ if(i<text.length){el.textContent+=text[i++];setTimeout(tick,speed);}else resolve(); };
+    tick();
+  });
+}
+
+function copyBlock(id, btn) {
+  const text = document.getElementById(id).textContent.trim();
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='Copied ✓'; btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000);
+  });
+}
+
+/* ════ KEYBOARD ════ */
+document.addEventListener('keydown', e=>{
+  if(e.key==='Enter' && e.ctrlKey){
+    if(wizMode) { if(wizStep===WIZARD_STEPS.length-1) handleGenerateWiz(); else wizNext(); }
+    else handleGenerateAll();
+  }
+  if(e.key==='Enter' && document.activeElement?.id==='inp-followup') handleFollowup();
+});
+
+showState('idle');
+</script>
+</body>
+</html>
