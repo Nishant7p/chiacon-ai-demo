@@ -1,9 +1,9 @@
 # Chiacon — AI Use Case Generator
 ### 48-Hour Take-Home Assignment · AI Consultant Role
  
-**Live Site →** [https://chiacon-ai-demo.vercel.app](https://vercel.com/tomernishant43-2473s-projects/chiacon-ai-demo)
+**Live Site:** [https://chiacon-ai-demo-orpin.vercel.app/](https://chiacon-ai-demo-orpin.vercel.app/)
  
-> Built end-to-end in 48 hours by **Nishant Tomer**
+> Built end-to-end in 48 hours 
  
 ---
  
