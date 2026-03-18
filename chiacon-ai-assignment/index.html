@@ -9,42 +9,80 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
       --bg: #f5f6f8; --white: #ffffff; --navy: #0d1e3d; --navy-mid: #1a3260;
       --teal: #1477a0; --teal-soft: #e6f2f7; --teal-mid: #b8d9e8;
       --text: #1a2840; --muted: #64748b; --border: #dde3eb; --border-dark: #c5cfd9;
       --radius-sm: 8px; --radius: 12px; --radius-lg: 18px;
     }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
 
-    nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.93); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 64px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    [data-theme="dark"] {
+      --bg: #0d1117; --white: #0f172a; --teal: #38bdf8; --teal-soft: #0c1e33;
+      --teal-mid: #1a3d5c; --text: #e2e8f0; --muted: #8fa3b8;
+      --border: #1e2d42; --border-dark: #2d3f55;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; transition: background .25s, color .25s; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.93); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 64px; height: 64px; display: flex; align-items: center; justify-content: space-between; transition: background .25s, border-color .25s; }
+    [data-theme="dark"] nav { background: rgba(10,15,25,.95); }
     .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .logo-mark { width: 32px; height: 32px; }
-    .logo-name { font-weight: 500; font-size: 1.05rem; color: var(--navy); letter-spacing: .04em; }
+    .logo-name { font-weight: 500; font-size: 1.05rem; color: var(--navy); letter-spacing: .04em; transition: color .25s; }
+    [data-theme="dark"] .logo-name { color: #d1dce8; }
     .logo-name b { color: var(--teal); font-weight: 500; }
-    .nav-right { display: flex; align-items: center; gap: 32px; }
-    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .nav-links { display: flex; gap: 28px; list-style: none; margin-right: 8px; }
     .nav-links a { color: var(--muted); text-decoration: none; font-size: .875rem; transition: color .15s; }
     .nav-links a:hover { color: var(--text); }
     .btn-nav { background: var(--navy); color: #fff; border: none; padding: 9px 22px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: .875rem; font-weight: 500; cursor: pointer; text-decoration: none; transition: background .15s; }
     .btn-nav:hover { background: var(--navy-mid); }
+    [data-theme="dark"] .btn-nav { background: var(--teal); color: #0a0f1c; }
+    [data-theme="dark"] .btn-nav:hover { background: #1ab3f0; }
 
-    .hero { background: var(--white); border-bottom: 1px solid var(--border); padding: 96px 64px 80px; }
+    .btn-theme { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--muted); transition: border-color .2s, color .2s, background .25s; flex-shrink: 0; }
+    .btn-theme:hover { border-color: var(--teal); color: var(--teal); }
+    .btn-theme svg { width: 15px; height: 15px; }
+
+    .history-wrap { position: relative; }
+    .btn-history { display: flex; align-items: center; gap: 7px; background: transparent; border: 1px solid var(--border); border-radius: 100px; padding: 6px 14px 6px 10px; font-family: 'DM Sans', sans-serif; font-size: .78rem; color: var(--muted); cursor: pointer; transition: border-color .2s, color .2s, background .25s; white-space: nowrap; }
+    .btn-history:hover { border-color: var(--teal); color: var(--teal); }
+    .btn-history svg { width: 13px; height: 13px; flex-shrink: 0; }
+    .history-badge { background: var(--teal); color: white; border-radius: 100px; font-size: .62rem; font-weight: 600; min-width: 17px; height: 17px; display: none; align-items: center; justify-content: center; padding: 0 4px; }
+    .history-badge.visible { display: inline-flex; }
+    .history-panel { position: absolute; top: calc(100% + 10px); right: 0; width: 290px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: 0 12px 40px rgba(0,0,0,.1); z-index: 300; display: none; overflow: hidden; }
+    [data-theme="dark"] .history-panel { box-shadow: 0 12px 40px rgba(0,0,0,.5); }
+    .history-panel.open { display: block; }
+    .history-panel-title { padding: 13px 16px 9px; font-size: .65rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); }
+    .history-empty { padding: 20px 16px; font-size: .84rem; color: var(--muted); text-align: center; }
+    .history-item { padding: 12px 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .15s; }
+    .history-item:last-child { border-bottom: none; }
+    .history-item:hover { background: var(--teal-soft); }
+    .history-item-label { font-size: .85rem; color: var(--text); font-weight: 500; margin-bottom: 2px; }
+    .history-item-time { font-size: .72rem; color: var(--muted); }
+
+    .hero { background: var(--white); border-bottom: 1px solid var(--border); padding: 96px 64px 80px; transition: background .25s, border-color .25s; }
     .hero-inner { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: 1fr 400px; gap: 80px; align-items: center; }
     .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: var(--teal-soft); border: 1px solid var(--teal-mid); border-radius: 100px; padding: 5px 14px; font-size: .72rem; font-weight: 500; color: var(--teal); letter-spacing: .07em; text-transform: uppercase; margin-bottom: 24px; }
     .hero h1 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(2.4rem, 4vw, 3.4rem); line-height: 1.12; color: var(--navy); margin-bottom: 22px; }
+    [data-theme="dark"] .hero h1 { color: #e2e8f0; }
     .hero h1 em { font-style: italic; color: var(--teal); }
     .hero-desc { font-size: 1.05rem; color: var(--muted); line-height: 1.75; font-weight: 300; max-width: 520px; margin-bottom: 36px; }
     .hero-actions { display: flex; gap: 12px; }
     .btn-primary { background: var(--navy); color: #fff; border: none; padding: 13px 28px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: .9rem; font-weight: 500; cursor: pointer; text-decoration: none; transition: background .15s; }
     .btn-primary:hover { background: var(--navy-mid); }
+    [data-theme="dark"] .btn-primary { background: var(--teal); color: #0a0f1c; }
+    [data-theme="dark"] .btn-primary:hover { background: #1ab3f0; }
     .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border-dark); padding: 13px 28px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: .9rem; cursor: pointer; text-decoration: none; transition: border-color .15s, color .15s; }
     .btn-outline:hover { border-color: var(--teal); color: var(--teal); }
-    .hero-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; }
+    .hero-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; transition: background .25s, border-color .25s; }
+    [data-theme="dark"] .hero-card { background: #111827; }
     .hero-card-label { font-size: .7rem; font-weight: 500; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
     .pill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .pill { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; }
+    .pill { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; transition: background .25s, border-color .25s; }
+    [data-theme="dark"] .pill { background: #1a2235; }
     .pill-icon { font-size: 1.15rem; margin-bottom: 7px; }
     .pill-name { font-size: .8rem; font-weight: 500; color: var(--text); display: block; }
     .pill-sub { font-size: .7rem; color: var(--muted); display: block; margin-top: 2px; }
@@ -55,22 +93,25 @@
     .section-header { margin-bottom: 48px; }
     .section-kicker { font-size: .7rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
     .section-title { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(1.9rem, 3vw, 2.5rem); color: var(--navy); line-height: 1.18; margin-bottom: 14px; }
+    [data-theme="dark"] .section-title { color: #e2e8f0; }
     .section-body { font-size: 1rem; color: var(--muted); font-weight: 300; line-height: 1.7; max-width: 560px; }
 
-    .services-bg { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .services-bg { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); transition: background .25s, border-color .25s; }
     .services-grid { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
     .sc { background: var(--white); border-right: 1px solid var(--border); padding: 30px 26px; transition: background .2s; }
     .sc:last-child { border-right: none; }
     .sc:hover { background: var(--teal-soft); }
     .sc-icon { width: 38px; height: 38px; background: var(--teal-soft); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1rem; margin-bottom: 16px; }
     .sc-title { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.1rem; color: var(--navy); margin-bottom: 9px; }
+    [data-theme="dark"] .sc-title { color: #d1dce8; }
     .sc-body { font-size: .84rem; color: var(--muted); line-height: 1.65; font-weight: 300; }
 
     .uc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
-    .uc { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px 26px; display: flex; flex-direction: column; transition: border-color .2s, transform .2s; }
+    .uc { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px 26px; display: flex; flex-direction: column; transition: border-color .2s, transform .2s, background .25s; }
     .uc:hover { border-color: var(--teal); transform: translateY(-3px); }
     .uc-tag { display: inline-block; background: var(--teal-soft); border: 1px solid var(--teal-mid); border-radius: 100px; padding: 4px 12px; font-size: .7rem; font-weight: 500; color: var(--teal); letter-spacing: .05em; text-transform: uppercase; margin-bottom: 18px; align-self: flex-start; }
     .uc-title { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.1rem; color: var(--navy); margin-bottom: 11px; line-height: 1.3; }
+    [data-theme="dark"] .uc-title { color: #d1dce8; }
     .uc-body { font-size: .86rem; color: var(--muted); line-height: 1.7; font-weight: 300; flex: 1; }
     .uc-detail { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); font-size: .8rem; color: var(--muted); line-height: 1.6; }
     .uc-detail strong { color: var(--text); font-weight: 500; }
@@ -178,16 +219,17 @@
     @keyframes blockIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .r-block.summary { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); }
     .r-block.opps { background: rgba(20,119,160,.12); border: 1px solid rgba(126,200,227,.2); }
-    .r-block.impact { background: rgba(22,163,74,.1); border: 1px solid rgba(22,163,74,.25); }
     .r-block-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
     .r-block-kicker { display: flex; align-items: center; gap: 8px; font-size: .68rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
     .r-block.summary .r-block-kicker { color: #8fa3b8; }
     .r-block.opps .r-block-kicker { color: #7ec8e3; }
-    .r-block.impact .r-block-kicker { color: #86efac; }
     .r-block-icon { width: 26px; height: 26px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: .82rem; flex-shrink: 0; }
     .r-block.summary .r-block-icon { background: rgba(255,255,255,.08); }
     .r-block.opps .r-block-icon { background: rgba(126,200,227,.15); }
-    .r-block.impact .r-block-icon { background: rgba(22,163,74,.15); }
+    .summary-header-actions { display: flex; gap: 8px; align-items: center; }
+    .audio-btn { background: none; border: 1px solid rgba(255,255,255,.14); color: rgba(200,214,228,.55); padding: 5px 12px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: .72rem; cursor: pointer; transition: all .15s; white-space: nowrap; }
+    .audio-btn:hover { border-color: #7ec8e3; color: #7ec8e3; }
+    .audio-btn.playing { border-color: rgba(220,80,60,.45); color: #f4a8a0; }
     .copy-btn { background: none; border: none; cursor: pointer; color: rgba(143,163,184,.45); font-size: .72rem; display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: var(--radius-sm); transition: all .15s; font-family: 'DM Sans', sans-serif; }
     .copy-btn:hover { color: #7ec8e3; background: rgba(255,255,255,.06); }
     .copy-btn.copied { color: #86efac; }
@@ -196,7 +238,6 @@
     .opp-item { display: flex; gap: 12px; align-items: flex-start; padding: 11px 13px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06); border-radius: var(--radius-sm); }
     .opp-num { width: 22px; height: 22px; border-radius: 50%; background: rgba(126,200,227,.2); border: 1px solid rgba(126,200,227,.3); display: flex; align-items: center; justify-content: center; font-size: .68rem; font-weight: 500; color: #7ec8e3; flex-shrink: 0; margin-top: 1px; }
     .opp-text { font-size: .88rem; color: #c8d6e4; line-height: 1.65; font-weight: 300; }
-    .impact-text { font-size: .9rem; color: #bbf7d0; line-height: 1.75; font-weight: 300; }
 
     .r-invalid { display: none; flex-direction: column; gap: 12px; padding: 28px; background: rgba(220,80,60,.08); border: 1px solid rgba(220,80,60,.2); border-radius: var(--radius); }
     .r-invalid.on { display: flex; }
@@ -210,6 +251,33 @@
     .roi-card-label { font-size: .64rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: rgba(143,163,184,.6); margin-bottom: 10px; }
     .roi-card-value { font-family: 'Instrument Serif', serif; font-size: 1.05rem; color: #e8edf4; line-height: 1.4; font-weight: 400; }
     .roi-card-icon { font-size: 1.2rem; margin-bottom: 10px; }
+
+    .roi-calc-block { display: none; opacity: 0; animation: blockIn .35s ease forwards; background: rgba(20,119,160,.09); border: 1px solid rgba(126,200,227,.18); border-radius: var(--radius); padding: 24px 26px; margin-bottom: 14px; }
+    .roi-calc-block.on { display: block; }
+    .roi-calc-header { display: flex; align-items: center; gap: 8px; font-size: .68rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: #7ec8e3; margin-bottom: 16px; }
+    .roi-calc-header .r-block-icon { background: rgba(126,200,227,.15); }
+    .roi-calc-rate-label { font-size: .76rem; color: rgba(143,163,184,.65); margin-bottom: 10px; }
+    .roi-calc-rate-row { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+    .roi-slider { flex: 1; appearance: none; -webkit-appearance: none; height: 4px; background: rgba(255,255,255,.14); border-radius: 2px; outline: none; cursor: pointer; }
+    .roi-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #7ec8e3; cursor: pointer; border: 2px solid rgba(255,255,255,.2); }
+    .roi-slider::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #7ec8e3; cursor: pointer; border: 2px solid rgba(255,255,255,.2); }
+    .roi-rate-tag { background: rgba(20,119,160,.3); border: 1px solid rgba(126,200,227,.4); border-radius: var(--radius-sm); padding: 6px 14px; font-size: .88rem; font-weight: 500; color: #7ec8e3; min-width: 82px; text-align: center; white-space: nowrap; }
+    .roi-annual-display { text-align: center; padding: 18px 16px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); border-radius: var(--radius-sm); }
+    .roi-annual-number { font-family: 'Instrument Serif', serif; font-size: 2.2rem; color: #7ec8e3; line-height: 1; margin-bottom: 5px; font-weight: 400; }
+    .roi-annual-sub { font-size: .74rem; color: rgba(143,163,184,.5); letter-spacing: .04em; }
+
+    .roadmap-block { display: none; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 22px 24px; margin-bottom: 14px; opacity: 0; animation: blockIn .35s ease forwards; }
+    .roadmap-block.on { display: block; }
+    .roadmap-block-header { display: flex; align-items: center; gap: 8px; font-size: .68rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: rgba(143,163,184,.7); margin-bottom: 22px; }
+    .roadmap-block-icon { width: 26px; height: 26px; border-radius: var(--radius-sm); background: rgba(255,255,255,.07); display: flex; align-items: center; justify-content: center; font-size: .82rem; flex-shrink: 0; }
+    .roadmap-stepper { display: flex; position: relative; padding-top: 6px; }
+    .roadmap-stepper::before { content: ''; position: absolute; top: 19px; left: calc(16.67% + 10px); right: calc(16.67% + 10px); height: 2px; background: rgba(126,200,227,.15); }
+    .roadmap-step { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1; }
+    .roadmap-circle { width: 38px; height: 38px; border-radius: 50%; background: rgba(20,119,160,.22); border: 2px solid rgba(126,200,227,.38); display: flex; align-items: center; justify-content: center; font-size: .86rem; font-weight: 600; color: #7ec8e3; margin-bottom: 14px; flex-shrink: 0; }
+    .roadmap-info { text-align: center; padding: 0 10px; }
+    .roadmap-phase { font-family: 'Instrument Serif', serif; font-size: .92rem; color: #d1dce8; margin-bottom: 5px; line-height: 1.25; font-weight: 400; }
+    .roadmap-timeframe { display: inline-block; font-size: .65rem; font-weight: 500; color: #7ec8e3; letter-spacing: .08em; text-transform: uppercase; background: rgba(20,119,160,.2); border-radius: 100px; padding: 2px 10px; margin-bottom: 8px; }
+    .roadmap-desc { font-size: .78rem; color: rgba(143,163,184,.6); line-height: 1.55; font-weight: 300; }
 
     .ctx-bar { display: none; flex-wrap: wrap; gap: 7px; margin-bottom: 18px; }
     .ctx-bar.on { display: flex; }
@@ -248,7 +316,7 @@
 
     @media (max-width: 960px) {
       nav { padding: 0 24px; }
-      .nav-links, .btn-nav { display: none; }
+      .nav-links, .btn-nav, .history-wrap { display: none; }
       .hero { padding: 60px 24px 56px; }
       .hero-inner { grid-template-columns: 1fr; }
       .hero-card { display: none; }
@@ -259,53 +327,52 @@
       .uc-grid { grid-template-columns: 1fr; }
       .result-panel { padding: 24px; }
       .roi-grid { grid-template-columns: 1fr; }
+      .roadmap-stepper { flex-direction: column; gap: 20px; }
+      .roadmap-stepper::before { display: none; }
+      .roadmap-step { flex-direction: row; align-items: flex-start; text-align: left; }
+      .roadmap-circle { margin-bottom: 0; margin-right: 14px; flex-shrink: 0; }
+      .roadmap-info { text-align: left; padding: 0; }
       footer { padding: 28px 24px; flex-direction: column; align-items: flex-start; }
     }
 
     @media print {
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-
       nav, header.hero, .services-bg, #usecases, .mode-toggle-bar,
       #all-mode-wrap, #wiz-mode-wrap, .followup-section, .pdf-row,
-      .copy-btn, footer, .r-idle, .r-loading, .r-invalid,
-      .r-error, #r-error { display: none !important; }
-
+      .copy-btn, .audio-btn, footer, .r-idle, .r-loading, .r-invalid,
+      .r-error, #r-error, .roi-calc-block { display: none !important; }
       body { background: #ffffff; color: #1a2840; font-size: 13px; }
-
       .demo-bg { background: #ffffff; border: none; padding: 0; }
       .demo-bg .section-header { display: none; }
       .section-wrap { padding: 0; max-width: 100%; }
-
       .result-panel { background: #ffffff; border: none; padding: 32px; min-height: unset; display: block; }
-
       .print-header { display: flex !important; align-items: center; justify-content: space-between; padding-bottom: 20px; border-bottom: 2px solid #0d1e3d; margin-bottom: 28px; }
       .print-logo { font-weight: 600; font-size: 1.2rem; color: #0d1e3d; letter-spacing: .04em; }
       .print-logo b { color: #1477a0; }
       .print-meta { font-size: .75rem; color: #64748b; text-align: right; }
-
       .ctx-bar { display: flex !important; }
       .ctx-chip { background: #e6f2f7; border-color: #b8d9e8; color: #1477a0; }
-
       .r-output { display: block !important; }
       .r-output.on { display: block !important; }
-
       .r-block { opacity: 1 !important; animation: none !important; break-inside: avoid; margin-bottom: 16px; }
       .r-block.summary { background: #f8fafc; border: 1px solid #dde3eb; }
       .r-block.opps { background: #e6f2f7; border: 1px solid #b8d9e8; }
-      .r-block.impact { background: #f0fdf4; border: 1px solid #bbf7d0; }
-
       .r-block-kicker { color: #1a2840 !important; }
       .r-block-icon { background: #dde3eb !important; }
       .r-text, .opp-text { color: #1a2840 !important; }
-      .impact-text { color: #15803d !important; }
       .opp-item { background: rgba(255,255,255,.7); border-color: #dde3eb; }
       .opp-num { background: #e6f2f7; border-color: #b8d9e8; color: #1477a0; }
-
       .roi-grid { display: grid !important; grid-template-columns: repeat(3,1fr); gap: 12px; opacity: 1 !important; animation: none !important; break-inside: avoid; }
       .roi-card { background: #f5f6f8; border: 1px solid #dde3eb; }
       .roi-card-value { color: #0d1e3d !important; }
       .roi-card-label { color: #64748b !important; }
-
+      .roadmap-block { display: block !important; opacity: 1 !important; animation: none !important; background: #f8fafc !important; border: 1px solid #dde3eb !important; break-inside: avoid; }
+      .roadmap-stepper::before { background: #dde3eb; }
+      .roadmap-circle { background: #e6f2f7 !important; border-color: #b8d9e8 !important; color: #1477a0 !important; }
+      .roadmap-phase { color: #0d1e3d !important; }
+      .roadmap-timeframe { color: #1477a0 !important; background: #e6f2f7 !important; }
+      .roadmap-desc { color: #64748b !important; }
+      .roadmap-block-header { color: #64748b !important; }
       .print-footer { display: flex !important; justify-content: space-between; padding-top: 20px; border-top: 1px solid #dde3eb; margin-top: 24px; font-size: .72rem; color: #64748b; }
     }
 
@@ -330,6 +397,28 @@
       <li><a href="#usecases">Use Cases</a></li>
       <li><a href="#demo">AI Demo</a></li>
     </ul>
+    <div class="history-wrap" id="history-wrap">
+      <button class="btn-history" id="btn-history" onclick="toggleHistoryPanel()">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8" cy="8" r="6"/><polyline points="8,4 8,8 11,10"/>
+        </svg>
+        Recent
+        <span class="history-badge" id="history-badge"></span>
+      </button>
+      <div class="history-panel" id="history-panel"></div>
+    </div>
+    <button class="btn-theme" id="btn-theme" onclick="toggleTheme()" aria-label="Toggle colour theme">
+      <svg id="icon-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <circle cx="8" cy="8" r="2.5"/>
+        <line x1="8" y1="1" x2="8" y2="2.5"/><line x1="8" y1="13.5" x2="8" y2="15"/>
+        <line x1="1" y1="8" x2="2.5" y2="8"/><line x1="13.5" y1="8" x2="15" y2="8"/>
+        <line x1="3.05" y1="3.05" x2="4.1" y2="4.1"/><line x1="11.9" y1="11.9" x2="12.95" y2="12.95"/>
+        <line x1="12.95" y1="3.05" x2="11.9" y2="4.1"/><line x1="4.1" y1="11.9" x2="3.05" y2="12.95"/>
+      </svg>
+      <svg id="icon-moon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="display:none">
+        <path d="M12.5 9A6 6 0 0 1 6 2.5a6.5 6.5 0 1 0 6.5 6.5z"/>
+      </svg>
+    </button>
     <a href="#demo" class="btn-nav">Try AI Demo</a>
   </div>
 </nav>
@@ -470,7 +559,7 @@
             <button class="btn-gen-all" id="btn-gen-all" onclick="handleGenerateAll()">
               <span id="btn-gen-all-label">Generate AI Analysis</span>
             </button>
-            <button class="btn-reset-all" onclick="resetAll()">↺ Reset</button>
+            <button class="btn-reset-all" onclick="resetAll()">&#8635; Reset</button>
           </div>
         </div>
       </div>
@@ -487,15 +576,14 @@
         <div class="wiz-footer">
           <button class="wiz-skip" id="wiz-skip-btn" onclick="wizSkip()">Skip this question</button>
           <div class="wiz-nav-right">
-            <button class="wiz-back" id="wiz-back-btn" onclick="wizBack()" disabled>← Back</button>
-            <button class="wiz-next" id="wiz-next-btn" onclick="wizNext()">Next →</button>
+            <button class="wiz-back" id="wiz-back-btn" onclick="wizBack()" disabled>&#8592; Back</button>
+            <button class="wiz-next" id="wiz-next-btn" onclick="wizNext()">Next &#8594;</button>
           </div>
         </div>
       </div>
     </div>
 
     <div class="result-panel" id="result-panel">
-
       <div class="print-header" id="print-header">
         <div class="print-logo">CHIA<b>CON</b></div>
         <div class="print-meta">
@@ -523,7 +611,7 @@
       </div>
 
       <div class="r-invalid" id="r-invalid">
-        <div class="r-invalid-icon">⚠️</div>
+        <div class="r-invalid-icon">&#9888;&#65039;</div>
         <div class="r-invalid-title">Unable to Process Request</div>
         <p class="r-invalid-msg" id="r-invalid-msg"></p>
       </div>
@@ -533,15 +621,18 @@
 
         <div class="r-block summary" id="block-1">
           <div class="r-block-header">
-            <div class="r-block-kicker"><div class="r-block-icon">📋</div>Problem Summary</div>
-            <button class="copy-btn" onclick="copyBlock('out-summary',this)">Copy</button>
+            <div class="r-block-kicker"><div class="r-block-icon">&#128203;</div>Problem Summary</div>
+            <div class="summary-header-actions">
+              <button class="audio-btn" id="audio-btn" onclick="toggleAudioBriefing()">&#9654; Play Briefing</button>
+              <button class="copy-btn" onclick="copyBlock('out-summary',this)">Copy</button>
+            </div>
           </div>
           <p class="r-text" id="out-summary"></p>
         </div>
 
         <div class="r-block opps" id="block-2">
           <div class="r-block-header">
-            <div class="r-block-kicker"><div class="r-block-icon">🚀</div>AI Opportunities</div>
+            <div class="r-block-kicker"><div class="r-block-icon">&#128640;</div>AI Opportunities</div>
             <button class="copy-btn" onclick="copyBlock('out-opps-plain',this)">Copy</button>
           </div>
           <div class="opp-list" id="out-opps"></div>
@@ -550,20 +641,44 @@
 
         <div class="roi-grid" id="roi-grid">
           <div class="roi-card">
-            <div class="roi-card-icon">⏱️</div>
+            <div class="roi-card-icon">&#9201;&#65039;</div>
             <div class="roi-card-label">Time Saved</div>
             <div class="roi-card-value" id="roi-time"></div>
           </div>
           <div class="roi-card">
-            <div class="roi-card-icon">💰</div>
+            <div class="roi-card-icon">&#128176;</div>
             <div class="roi-card-label">Cost Reduction</div>
             <div class="roi-card-value" id="roi-cost"></div>
           </div>
           <div class="roi-card">
-            <div class="roi-card-icon">📅</div>
-            <div class="roi-card-label">Implementation Timeline</div>
-            <div class="roi-card-value" id="roi-timeline"></div>
+            <div class="roi-card-icon">&#9203;</div>
+            <div class="roi-card-label">Hours Saved / Month</div>
+            <div class="roi-card-value" id="roi-hours"></div>
           </div>
+        </div>
+
+        <div class="roi-calc-block" id="roi-calc-block">
+          <div class="roi-calc-header">
+            <div class="r-block-icon">&#129518;</div>
+            Calculate Your Financial Impact
+          </div>
+          <div class="roi-calc-rate-label">Average Employee Hourly Rate</div>
+          <div class="roi-calc-rate-row">
+            <input type="range" class="roi-slider" id="roi-slider" min="20" max="200" value="40" step="5"/>
+            <div class="roi-rate-tag">$<span id="roi-rate-val">40</span>/hr</div>
+          </div>
+          <div class="roi-annual-display">
+            <div class="roi-annual-number" id="roi-annual-amt">$0</div>
+            <div class="roi-annual-sub">estimated annual value recovered</div>
+          </div>
+        </div>
+
+        <div class="roadmap-block" id="roadmap-block">
+          <div class="roadmap-block-header">
+            <div class="roadmap-block-icon">&#128506;&#65039;</div>
+            Implementation Roadmap
+          </div>
+          <div class="roadmap-stepper" id="roadmap-stepper"></div>
         </div>
 
         <div class="followup-section" id="followup-section">
@@ -577,7 +692,7 @@
           </div>
           <div class="followup-row">
             <input id="inp-followup" class="followup-input" type="text" placeholder="Or ask your own follow-up…"/>
-            <button id="btn-refine" class="btn-refine" onclick="handleFollowup()">Ask →</button>
+            <button id="btn-refine" class="btn-refine" onclick="handleFollowup()">Ask &#8594;</button>
           </div>
         </div>
 
@@ -600,7 +715,6 @@
 
       <div class="r-error" id="r-error"></div>
     </div>
-
   </div>
 </section>
 
@@ -619,8 +733,171 @@ const WIZARD_STEPS = [
   { key: 'problem', question: "Describe the business problem you're trying to solve.", sub: "Be as specific as you can — what's going wrong, how often, and what it costs you.", required: true, type: 'textarea', placeholder: "e.g. Our finance team manually consolidates reports from 12 branches every month. It takes 2 full days and errors are frequent." }
 ];
 
+const HISTORY_KEY = 'chiacon_history';
+const THEME_KEY = 'chiacon_theme';
+
 let wizStep = 0, wizMode = false, wizAnswers = {}, conversation = [], hasResult = false;
+let hoursSavedPerMonth = 0, audioPlaying = false, currentAnswers = {};
 const allCtx = { industry: '', size: '', dept: '', tools: '' };
+
+function initTheme() {
+  const savedTheme = localStorage.getItem(THEME_KEY) || 'light';
+  applyTheme(savedTheme);
+}
+
+function applyTheme(themeName) {
+  document.documentElement.setAttribute('data-theme', themeName);
+  document.getElementById('icon-sun').style.display = themeName === 'dark' ? 'none' : 'block';
+  document.getElementById('icon-moon').style.display = themeName === 'dark' ? 'block' : 'none';
+  localStorage.setItem(THEME_KEY, themeName);
+}
+
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+}
+
+function readHistory() {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function saveAnalysisToHistory(result, answers) {
+  const historyList = readHistory();
+  const newEntry = {
+    id: Date.now(),
+    timestamp: new Date().toISOString(),
+    label: answers.industry || 'Business Analysis',
+    sublabel: answers.dept || '',
+    result,
+    answers
+  };
+  localStorage.setItem(HISTORY_KEY, JSON.stringify([newEntry, ...historyList].slice(0, 5)));
+  renderHistoryDropdown();
+}
+
+function renderHistoryDropdown() {
+  const historyList = readHistory();
+  const panelEl = document.getElementById('history-panel');
+  const badgeEl = document.getElementById('history-badge');
+  if (historyList.length === 0) {
+    panelEl.innerHTML = '<p class="history-empty">No analyses saved yet.</p>';
+    badgeEl.textContent = '';
+    badgeEl.classList.remove('visible');
+    return;
+  }
+  badgeEl.textContent = historyList.length;
+  badgeEl.classList.add('visible');
+  panelEl.innerHTML = '<div class="history-panel-title">Recent Analyses</div>' + historyList.map((entry, idx) => {
+    const formattedDate = new Date(entry.timestamp).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+    const sublabelText = entry.sublabel ? ' · ' + entry.sublabel : '';
+    return `<div class="history-item" onclick="loadHistoryEntry(${idx})"><div class="history-item-label">${entry.label}${sublabelText}</div><div class="history-item-time">${formattedDate}</div></div>`;
+  }).join('');
+}
+
+async function loadHistoryEntry(entryIndex) {
+  const historyList = readHistory();
+  const entry = historyList[entryIndex];
+  if (!entry) return;
+  closeHistoryPanel();
+  currentAnswers = entry.answers || {};
+  conversation = [
+    { role: 'user', content: buildMessage(entry.answers) },
+    { role: 'assistant', content: JSON.stringify(entry.result) }
+  ];
+  hasResult = true;
+  showState('output');
+  await renderResult(entry.result, entry.answers, true);
+  document.getElementById('followup-section').classList.add('on');
+  document.getElementById('pdf-row').classList.add('on');
+  document.getElementById('result-panel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function toggleHistoryPanel() {
+  document.getElementById('history-panel').classList.toggle('open');
+}
+
+function closeHistoryPanel() {
+  document.getElementById('history-panel').classList.remove('open');
+}
+
+function toggleAudioBriefing() {
+  audioPlaying ? stopAudioBriefing() : startAudioBriefing(document.getElementById('out-summary').textContent);
+}
+
+function startAudioBriefing(summaryText) {
+  if (!window.speechSynthesis || !summaryText) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(summaryText);
+  utterance.rate = 0.95;
+  utterance.pitch = 1;
+  utterance.onend = resetAudioButton;
+  utterance.onerror = resetAudioButton;
+  window.speechSynthesis.speak(utterance);
+  audioPlaying = true;
+  const audioBtnEl = document.getElementById('audio-btn');
+  audioBtnEl.textContent = '&#9209; Stop';
+  audioBtnEl.classList.add('playing');
+}
+
+function stopAudioBriefing() {
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  resetAudioButton();
+}
+
+function resetAudioButton() {
+  audioPlaying = false;
+  const audioBtnEl = document.getElementById('audio-btn');
+  if (audioBtnEl) { audioBtnEl.innerHTML = '&#9654; Play Briefing'; audioBtnEl.classList.remove('playing'); }
+}
+
+function initRoiCalculator(monthlyHours) {
+  hoursSavedPerMonth = monthlyHours || 0;
+  document.getElementById('roi-slider').value = 40;
+  document.getElementById('roi-rate-val').textContent = '40';
+  updateRoiCalculation();
+}
+
+function updateRoiCalculation() {
+  const hourlyRate = parseInt(document.getElementById('roi-slider').value, 10);
+  document.getElementById('roi-rate-val').textContent = hourlyRate;
+  const annualValue = hoursSavedPerMonth * hourlyRate * 12;
+  document.getElementById('roi-annual-amt').textContent = '$' + annualValue.toLocaleString('en-US');
+}
+
+function renderRoadmapStepper(roadmapData) {
+  if (!roadmapData || roadmapData.length === 0) return;
+  document.getElementById('roadmap-stepper').innerHTML = roadmapData.map((item, idx) => `
+    <div class="roadmap-step">
+      <div class="roadmap-circle">${idx + 1}</div>
+      <div class="roadmap-info">
+        <div class="roadmap-phase">${item.phase || ''}</div>
+        <div class="roadmap-timeframe">${item.timeframe || ''}</div>
+        <div class="roadmap-desc">${item.description || ''}</div>
+      </div>
+    </div>`).join('');
+}
+
+function revealBlock(elementId, delaySeconds) {
+  const blockEl = document.getElementById(elementId);
+  blockEl.style.animation = 'none';
+  blockEl.style.opacity = '0';
+  blockEl.style.animationDelay = '';
+  void blockEl.offsetHeight;
+  blockEl.style.animation = '';
+  blockEl.style.animationDelay = delaySeconds + 's';
+  blockEl.classList.add('on');
+}
+
+function resetNewBlocks() {
+  ['roi-calc-block', 'roadmap-block'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('on');
+    el.style.opacity = '';
+    el.style.animation = '';
+    el.style.animationDelay = '';
+  });
+}
 
 function switchMode() {
   wizMode = document.getElementById('mode-toggle').checked;
@@ -638,55 +915,59 @@ function initWizard() {
 }
 
 function buildSlides() {
-  const container = document.getElementById('wiz-slides');
-  container.innerHTML = '';
-  const dotsEl = document.getElementById('wiz-dots');
-  dotsEl.innerHTML = '';
-  WIZARD_STEPS.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'wiz-dot'; d.id = `dot-${i}`;
-    dotsEl.appendChild(d);
+  const slidesContainer = document.getElementById('wiz-slides');
+  slidesContainer.innerHTML = '';
+  const dotsContainer = document.getElementById('wiz-dots');
+  dotsContainer.innerHTML = '';
+  WIZARD_STEPS.forEach((_, idx) => {
+    const dotEl = document.createElement('div');
+    dotEl.className = 'wiz-dot'; dotEl.id = 'dot-' + idx;
+    dotsContainer.appendChild(dotEl);
   });
-  WIZARD_STEPS.forEach((step, i) => {
-    const slide = document.createElement('div');
-    slide.className = 'wiz-slide' + (i === 0 ? ' active' : '');
-    slide.id = `slide-${i}`;
-    let inner = `<div class="wiz-q-num">Question ${i+1} of ${WIZARD_STEPS.length}${step.required ? ' <span style="color:#7ec8e3">· Required</span>' : ''}</div><div class="wiz-q-text">${step.question}</div>${step.sub ? `<div class="wiz-q-sub">${step.sub}</div>` : ''}`;
-    if (step.type === 'chips') {
-      inner += `<div class="wiz-chips" id="wchips-${i}">`;
-      step.options.forEach(opt => { inner += `<div class="wiz-chip" data-step="${i}" data-value="${opt}" onclick="wizSelectChip(this)">${opt}</div>`; });
-      inner += `<div class="wiz-chip other-chip" data-step="${i}" data-value="__other__" onclick="wizSelectChip(this)">Other…</div></div>`;
-      inner += `<input class="wiz-other-input" id="wiz-other-${i}" placeholder="Type your own answer…" oninput="wizOtherInput(${i})"/>`;
-    } else if (step.type === 'textarea') {
-      inner += `<textarea class="wiz-textarea" id="wiz-ta-${i}" placeholder="${step.placeholder || ''}" oninput="wizTaInput(${i})"></textarea>`;
+  WIZARD_STEPS.forEach((stepDef, idx) => {
+    const slideEl = document.createElement('div');
+    slideEl.className = 'wiz-slide' + (idx === 0 ? ' active' : '');
+    slideEl.id = 'slide-' + idx;
+    let html = `<div class="wiz-q-num">Question ${idx+1} of ${WIZARD_STEPS.length}${stepDef.required ? ' <span style="color:#7ec8e3">· Required</span>' : ''}</div><div class="wiz-q-text">${stepDef.question}</div>${stepDef.sub ? '<div class="wiz-q-sub">' + stepDef.sub + '</div>' : ''}`;
+    if (stepDef.type === 'chips') {
+      html += '<div class="wiz-chips" id="wchips-' + idx + '">';
+      stepDef.options.forEach(opt => { html += `<div class="wiz-chip" data-step="${idx}" data-value="${opt}" onclick="wizSelectChip(this)">${opt}</div>`; });
+      html += `<div class="wiz-chip other-chip" data-step="${idx}" data-value="__other__" onclick="wizSelectChip(this)">Other…</div></div>`;
+      html += `<input class="wiz-other-input" id="wiz-other-${idx}" placeholder="Type your own answer…" oninput="wizOtherInput(${idx})"/>`;
+    } else if (stepDef.type === 'textarea') {
+      html += `<textarea class="wiz-textarea" id="wiz-ta-${idx}" placeholder="${stepDef.placeholder || ''}" oninput="wizTaInput(${idx})"></textarea>`;
     }
-    slide.innerHTML = inner;
-    container.appendChild(slide);
+    slideEl.innerHTML = html;
+    slidesContainer.appendChild(slideEl);
   });
 }
 
-function wizSelectChip(el) {
-  const stepIdx = parseInt(el.dataset.step);
-  document.querySelectorAll(`#wchips-${stepIdx} .wiz-chip`).forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  const otherInput = document.getElementById(`wiz-other-${stepIdx}`);
-  if (el.dataset.value === '__other__') {
-    otherInput.classList.add('visible'); otherInput.focus();
-    wizAnswers[WIZARD_STEPS[stepIdx].key] = otherInput.value.trim() || '';
+function wizSelectChip(chipEl) {
+  const stepIdx = parseInt(chipEl.dataset.step);
+  document.querySelectorAll('#wchips-' + stepIdx + ' .wiz-chip').forEach(c => c.classList.remove('selected'));
+  chipEl.classList.add('selected');
+  const otherInputEl = document.getElementById('wiz-other-' + stepIdx);
+  if (chipEl.dataset.value === '__other__') {
+    otherInputEl.classList.add('visible'); otherInputEl.focus();
+    wizAnswers[WIZARD_STEPS[stepIdx].key] = otherInputEl.value.trim() || '';
   } else {
-    otherInput.classList.remove('visible');
-    wizAnswers[WIZARD_STEPS[stepIdx].key] = el.dataset.value;
+    otherInputEl.classList.remove('visible');
+    wizAnswers[WIZARD_STEPS[stepIdx].key] = chipEl.dataset.value;
   }
-  if (el.dataset.value !== '__other__' && stepIdx < WIZARD_STEPS.length - 1) setTimeout(() => wizNext(), 350);
+  if (chipEl.dataset.value !== '__other__' && stepIdx < WIZARD_STEPS.length - 1) setTimeout(() => wizNext(), 350);
 }
 
-function wizOtherInput(stepIdx) { wizAnswers[WIZARD_STEPS[stepIdx].key] = document.getElementById(`wiz-other-${stepIdx}`).value.trim(); }
-function wizTaInput(stepIdx) { wizAnswers[WIZARD_STEPS[stepIdx].key] = document.getElementById(`wiz-ta-${stepIdx}`).value.trim(); }
+function wizOtherInput(stepIdx) { wizAnswers[WIZARD_STEPS[stepIdx].key] = document.getElementById('wiz-other-' + stepIdx).value.trim(); }
+function wizTaInput(stepIdx) { wizAnswers[WIZARD_STEPS[stepIdx].key] = document.getElementById('wiz-ta-' + stepIdx).value.trim(); }
 
 function wizNext() {
-  const step = WIZARD_STEPS[wizStep];
-  if (step.required && !wizAnswers[step.key]) {
-    if (step.type === 'textarea') { const ta = document.getElementById(`wiz-ta-${wizStep}`); ta.style.borderColor = 'rgba(220,80,60,.65)'; ta.focus(); setTimeout(() => ta.style.borderColor = '', 1600); }
+  const currentStep = WIZARD_STEPS[wizStep];
+  if (currentStep.required && !wizAnswers[currentStep.key]) {
+    if (currentStep.type === 'textarea') {
+      const taEl = document.getElementById('wiz-ta-' + wizStep);
+      taEl.style.borderColor = 'rgba(220,80,60,.65)'; taEl.focus();
+      setTimeout(() => taEl.style.borderColor = '', 1600);
+    }
     return;
   }
   if (wizStep === WIZARD_STEPS.length - 1) { handleGenerateWiz(); return; }
@@ -701,153 +982,208 @@ function wizSkip() {
   goToSlide(wizStep + 1);
 }
 
-function goToSlide(next) {
-  const currentEl = document.getElementById(`slide-${wizStep}`);
-  const nextEl = document.getElementById(`slide-${next}`);
-  const forward = next > wizStep;
-  currentEl.classList.remove('active'); currentEl.classList.add('exit-left');
-  setTimeout(() => currentEl.classList.remove('exit-left'), 350);
-  nextEl.style.transform = forward ? 'translateX(48px)' : 'translateX(-48px)'; nextEl.style.opacity = '0';
-  nextEl.classList.add('active');
-  setTimeout(() => { nextEl.style.transform = ''; nextEl.style.opacity = ''; }, 20);
-  wizStep = next; updateWizUI();
+function goToSlide(nextIdx) {
+  const currentSlideEl = document.getElementById('slide-' + wizStep);
+  const nextSlideEl = document.getElementById('slide-' + nextIdx);
+  const isForward = nextIdx > wizStep;
+  currentSlideEl.classList.remove('active'); currentSlideEl.classList.add('exit-left');
+  setTimeout(() => currentSlideEl.classList.remove('exit-left'), 350);
+  nextSlideEl.style.transform = isForward ? 'translateX(48px)' : 'translateX(-48px)';
+  nextSlideEl.style.opacity = '0';
+  nextSlideEl.classList.add('active');
+  setTimeout(() => { nextSlideEl.style.transform = ''; nextSlideEl.style.opacity = ''; }, 20);
+  wizStep = nextIdx; updateWizUI();
 }
 
 function updateWizUI() {
-  const total = WIZARD_STEPS.length;
-  const pct = Math.round((wizStep / total) * 100);
+  const totalSteps = WIZARD_STEPS.length;
+  const pct = Math.round((wizStep / totalSteps) * 100);
   document.getElementById('wiz-fill').style.width = pct + '%';
   document.getElementById('wiz-pct').textContent = pct + '% complete';
-  WIZARD_STEPS.forEach((_, i) => { const d = document.getElementById(`dot-${i}`); d.className = 'wiz-dot' + (i < wizStep ? ' done' : i === wizStep ? ' active' : ''); });
+  WIZARD_STEPS.forEach((_, dotIdx) => {
+    const dotEl = document.getElementById('dot-' + dotIdx);
+    dotEl.className = 'wiz-dot' + (dotIdx < wizStep ? ' done' : dotIdx === wizStep ? ' active' : '');
+  });
   document.getElementById('wiz-back-btn').disabled = wizStep === 0;
-  const nextBtn = document.getElementById('wiz-next-btn');
-  const isLast = wizStep === total - 1;
-  const skipBtn = document.getElementById('wiz-skip-btn');
-  if (isLast) { nextBtn.textContent = 'Generate Analysis ✦'; nextBtn.classList.add('generate-btn'); skipBtn.style.visibility = 'hidden'; }
-  else { nextBtn.innerHTML = 'Next →'; nextBtn.classList.remove('generate-btn'); skipBtn.style.visibility = 'visible'; }
+  const nextBtnEl = document.getElementById('wiz-next-btn');
+  const isLastStep = wizStep === totalSteps - 1;
+  const skipBtnEl = document.getElementById('wiz-skip-btn');
+  if (isLastStep) {
+    nextBtnEl.textContent = 'Generate Analysis ✦'; nextBtnEl.classList.add('generate-btn'); skipBtnEl.style.visibility = 'hidden';
+  } else {
+    nextBtnEl.innerHTML = 'Next →'; nextBtnEl.classList.remove('generate-btn'); skipBtnEl.style.visibility = 'visible';
+  }
 }
 
-document.querySelectorAll('.all-chips').forEach(group => {
-  group.addEventListener('click', e => {
-    const chip = e.target.closest('.all-chip');
-    if (!chip) return;
-    const groupName = group.dataset.group;
-    group.querySelectorAll('.all-chip').forEach(c => c.classList.remove('selected'));
-    chip.classList.add('selected');
-    const otherEl = document.getElementById(`other-${groupName}`);
-    if (chip.dataset.value === '__other__') { if (otherEl) { otherEl.classList.add('visible'); otherEl.focus(); } allCtx[groupName] = otherEl ? otherEl.value.trim() : ''; }
-    else { if (otherEl) otherEl.classList.remove('visible'); allCtx[groupName] = chip.dataset.value; }
+document.querySelectorAll('.all-chips').forEach(chipGroupEl => {
+  chipGroupEl.addEventListener('click', clickEvt => {
+    const chipEl = clickEvt.target.closest('.all-chip');
+    if (!chipEl) return;
+    const groupName = chipGroupEl.dataset.group;
+    chipGroupEl.querySelectorAll('.all-chip').forEach(c => c.classList.remove('selected'));
+    chipEl.classList.add('selected');
+    const otherEl = document.getElementById('other-' + groupName);
+    if (chipEl.dataset.value === '__other__') {
+      if (otherEl) { otherEl.classList.add('visible'); otherEl.focus(); }
+      allCtx[groupName] = otherEl ? otherEl.value.trim() : '';
+    } else {
+      if (otherEl) otherEl.classList.remove('visible');
+      allCtx[groupName] = chipEl.dataset.value;
+    }
   });
 });
 
-['other-industry', 'other-dept'].forEach(id => {
-  const el = document.getElementById(id);
-  if (el) el.addEventListener('input', () => { allCtx[id.replace('other-', '')] = el.value.trim(); });
+['other-industry', 'other-dept'].forEach(inputId => {
+  const inputEl = document.getElementById(inputId);
+  if (inputEl) inputEl.addEventListener('input', () => { allCtx[inputId.replace('other-', '')] = inputEl.value.trim(); });
+});
+
+document.getElementById('roi-slider').addEventListener('input', updateRoiCalculation);
+
+document.addEventListener('click', outsideEvt => {
+  if (!outsideEvt.target.closest('.history-wrap')) closeHistoryPanel();
 });
 
 function buildMessage(answers) {
-  const lines = [];
-  if (answers.industry) lines.push(`Industry: ${answers.industry}`);
-  if (answers.size) lines.push(`Company size: ${answers.size}`);
-  if (answers.dept) lines.push(`Department: ${answers.dept}`);
-  if (answers.tools) lines.push(`Current approach: ${answers.tools}`);
-  if (answers.problem) lines.push(`Business Problem: ${answers.problem}`);
-  return lines.join('\n');
+  const parts = [];
+  if (answers.industry) parts.push('Industry: ' + answers.industry);
+  if (answers.size) parts.push('Company size: ' + answers.size);
+  if (answers.dept) parts.push('Department: ' + answers.dept);
+  if (answers.tools) parts.push('Current approach: ' + answers.tools);
+  if (answers.problem) parts.push('Business Problem: ' + answers.problem);
+  return parts.join('\n');
 }
 
-async function callAPI(messages) {
-  const res = await fetch('/api/chat', {
+async function callAPI(messageHistory) {
+  const apiResponse = await fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ messages })
+    body: JSON.stringify({ messages: messageHistory })
   });
-  if (!res.ok) { const b = await res.json().catch(() => ({})); throw new Error(b.error || `Error ${res.status}`); }
-  const data = await res.json();
-  const raw = (data.content || []).map(b => b.text || '').join('').trim();
-  const clean = raw.replace(/^```(?:json)?\s*|\s*```$/gm, '').trim();
-  return JSON.parse(clean);
+  if (!apiResponse.ok) {
+    const errBody = await apiResponse.json().catch(() => ({}));
+    throw new Error(errBody.error || 'Error ' + apiResponse.status);
+  }
+  const responseData = await apiResponse.json();
+  const rawText = (responseData.content || []).map(block => block.text || '').join('').trim();
+  const cleanText = rawText.replace(/^```(?:json)?\s*|\s*```$/gm, '').trim();
+  return JSON.parse(cleanText);
 }
 
 async function runGenerate(answers) {
-  const content = buildMessage(answers);
-  conversation = [{ role: 'user', content }];
+  const userMessage = buildMessage(answers);
+  conversation = [{ role: 'user', content: userMessage }];
+  currentAnswers = answers;
   setBusy(true); showState('loading'); startLoadingAnim();
   document.getElementById('followup-section').classList.remove('on');
   document.getElementById('pdf-row').classList.remove('on');
   try {
-    const parsed = await callAPI(conversation);
-    conversation.push({ role: 'assistant', content: JSON.stringify(parsed) });
+    const parsedResult = await callAPI(conversation);
+    conversation.push({ role: 'assistant', content: JSON.stringify(parsedResult) });
     stopLoadingAnim();
-    if (parsed.isValid === false) {
-      showInvalid(parsed.message);
+    if (parsedResult.isValid === false) {
+      showInvalid(parsedResult.message);
     } else {
-      await renderResult(parsed, answers);
+      saveAnalysisToHistory(parsedResult, answers);
+      await renderResult(parsedResult, answers, false);
     }
   } catch (err) {
     stopLoadingAnim(); showState('idle');
-    const e = document.getElementById('r-error');
-    e.textContent = 'Something went wrong: ' + err.message; e.classList.add('on');
-    console.error(err);
+    const errorEl = document.getElementById('r-error');
+    errorEl.textContent = 'Something went wrong: ' + err.message; errorEl.classList.add('on');
   } finally { setBusy(false); }
 }
 
-function showInvalid(msg) {
+function showInvalid(invalidMsg) {
   document.getElementById('r-idle').style.display = 'none';
   document.getElementById('r-loading').classList.remove('on');
   document.getElementById('r-output').classList.remove('on');
   document.getElementById('r-error').classList.remove('on');
-  document.getElementById('r-invalid-msg').textContent = msg || 'This input cannot be processed. Please describe a specific business operations challenge.';
+  document.getElementById('r-invalid-msg').textContent = invalidMsg || 'This input cannot be processed. Please describe a specific business operations challenge.';
   document.getElementById('r-invalid').classList.add('on');
 }
 
 function handleGenerateAll() {
-  const problem = document.getElementById('all-problem').value.trim();
-  if (!problem) { const ta = document.getElementById('all-problem'); ta.style.borderColor = 'rgba(220,80,60,.65)'; ta.focus(); setTimeout(() => ta.style.borderColor = '', 1800); return; }
-  runGenerate({ ...allCtx, problem });
+  const problemText = document.getElementById('all-problem').value.trim();
+  if (!problemText) {
+    const taEl = document.getElementById('all-problem');
+    taEl.style.borderColor = 'rgba(220,80,60,.65)'; taEl.focus();
+    setTimeout(() => taEl.style.borderColor = '', 1800);
+    return;
+  }
+  runGenerate({ ...allCtx, problem: problemText });
 }
 
 function handleGenerateWiz() {
-  const problem = wizAnswers['problem'] || '';
-  if (!problem) { const ta = document.getElementById(`wiz-ta-${wizStep}`); if (ta) { ta.style.borderColor = 'rgba(220,80,60,.65)'; ta.focus(); setTimeout(() => ta.style.borderColor = '', 1600); } return; }
+  const problemText = wizAnswers['problem'] || '';
+  if (!problemText) {
+    const taEl = document.getElementById('wiz-ta-' + wizStep);
+    if (taEl) { taEl.style.borderColor = 'rgba(220,80,60,.65)'; taEl.focus(); setTimeout(() => taEl.style.borderColor = '', 1600); }
+    return;
+  }
   runGenerate(wizAnswers);
 }
 
-async function renderResult(d, answers) {
-  const bar = document.getElementById('ctx-bar');
-  bar.innerHTML = '';
-  const labels = { industry: 'Industry', size: 'Size', dept: 'Department', tools: 'Approach' };
-  Object.entries(labels).forEach(([k, label]) => { const v = answers[k]; if (v) bar.innerHTML += `<div class="ctx-chip"><span>${label}</span> ${v}</div>`; });
-  bar.classList.toggle('on', bar.children.length > 0);
+async function renderResult(resultData, answers, isInstant) {
+  stopAudioBriefing();
+  resetNewBlocks();
 
-  ['block-1', 'block-2'].forEach((id, i) => { const el = document.getElementById(id); el.style.animation = 'none'; void el.offsetHeight; el.style.animation = ''; el.style.animationDelay = (i * .08) + 's'; });
-  const roiGrid = document.getElementById('roi-grid');
-  roiGrid.style.animation = 'none'; void roiGrid.offsetHeight; roiGrid.style.animation = ''; roiGrid.style.animationDelay = '.24s';
+  const ctxBarEl = document.getElementById('ctx-bar');
+  ctxBarEl.innerHTML = '';
+  const contextLabels = { industry: 'Industry', size: 'Size', dept: 'Department', tools: 'Approach' };
+  Object.entries(contextLabels).forEach(([key, label]) => {
+    const value = answers[key];
+    if (value) ctxBarEl.innerHTML += `<div class="ctx-chip"><span>${label}</span> ${value}</div>`;
+  });
+  ctxBarEl.classList.toggle('on', ctxBarEl.children.length > 0);
+
+  ['block-1', 'block-2'].forEach((blockId, idx) => {
+    const blockEl = document.getElementById(blockId);
+    blockEl.style.animation = 'none'; void blockEl.offsetHeight; blockEl.style.animation = '';
+    blockEl.style.animationDelay = (idx * .08) + 's';
+  });
+  const roiGridEl = document.getElementById('roi-grid');
+  roiGridEl.style.animation = 'none'; void roiGridEl.offsetHeight; roiGridEl.style.animation = '';
+  roiGridEl.style.animationDelay = '.24s';
 
   showState('output');
 
-  await typewrite(document.getElementById('out-summary'), d.summary || '', 11);
+  await typewrite(document.getElementById('out-summary'), resultData.summary || '', isInstant ? 0 : 11);
 
-  const oppList = document.getElementById('out-opps');
-  oppList.innerHTML = '';
-  let oppPlain = '';
-  (d.opportunities || []).forEach((op, i) => {
-    oppPlain += `${i + 1}. ${op}\n`;
-    const item = document.createElement('div');
-    item.className = 'opp-item';
-    item.style.cssText = `opacity:0;animation:blockIn .3s ease ${.1 + i * .1}s forwards`;
-    item.innerHTML = `<div class="opp-num">${i + 1}</div><div class="opp-text"></div>`;
-    oppList.appendChild(item);
-    setTimeout(() => typewrite(item.querySelector('.opp-text'), op, 10), (i + 1) * 120);
+  const oppListEl = document.getElementById('out-opps');
+  oppListEl.innerHTML = '';
+  let oppPlainText = '';
+  (resultData.opportunities || []).forEach((oppText, idx) => {
+    oppPlainText += (idx + 1) + '. ' + oppText + '\n';
+    const itemEl = document.createElement('div');
+    itemEl.className = 'opp-item';
+    itemEl.style.cssText = 'opacity:0;animation:blockIn .3s ease ' + (.1 + idx * .1) + 's forwards';
+    itemEl.innerHTML = '<div class="opp-num">' + (idx + 1) + '</div><div class="opp-text"></div>';
+    oppListEl.appendChild(itemEl);
+    const delay = isInstant ? 0 : (idx + 1) * 120;
+    setTimeout(() => typewrite(itemEl.querySelector('.opp-text'), oppText, isInstant ? 0 : 10), delay);
   });
-  document.getElementById('out-opps-plain').textContent = oppPlain.trim();
+  document.getElementById('out-opps-plain').textContent = oppPlainText.trim();
 
-  if (d.roi_metrics) {
-    document.getElementById('roi-time').textContent     = d.roi_metrics.time_saved    || '—';
-    document.getElementById('roi-cost').textContent     = d.roi_metrics.cost_reduction || '—';
-    document.getElementById('roi-timeline').textContent = d.roi_metrics.timeline       || '—';
-  }
+  const roiMetrics = resultData.roi_metrics || {};
+  document.getElementById('roi-time').textContent = roiMetrics.time_saved || '—';
+  document.getElementById('roi-cost').textContent = roiMetrics.cost_reduction || '—';
+
+  const monthlyHours = parseInt(roiMetrics.hours_saved_per_month, 10) || 0;
+  document.getElementById('roi-hours').textContent = monthlyHours ? monthlyHours + ' hrs' : '—';
 
   document.getElementById('print-date').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  const calcDelay = isInstant ? 0 : 500;
+  setTimeout(() => {
+    initRoiCalculator(monthlyHours);
+    revealBlock('roi-calc-block', 0);
+  }, calcDelay);
+
+  if (resultData.roadmap && resultData.roadmap.length > 0) {
+    renderRoadmapStepper(resultData.roadmap);
+    setTimeout(() => revealBlock('roadmap-block', 0), isInstant ? 0 : 700);
+  }
 
   document.getElementById('followup-section').classList.add('on');
   document.getElementById('pdf-row').classList.add('on');
@@ -855,37 +1191,42 @@ async function renderResult(d, answers) {
 }
 
 async function handleFollowup() {
-  const input = document.getElementById('inp-followup');
-  const text = input.value.trim();
-  if (!text || !hasResult) return;
-  conversation.push({ role: 'user', content: text });
-  input.value = '';
+  const inputEl = document.getElementById('inp-followup');
+  const followupText = inputEl.value.trim();
+  if (!followupText || !hasResult) return;
+  conversation.push({ role: 'user', content: followupText });
+  inputEl.value = '';
   setBusy(true); showState('loading'); startLoadingAnim();
   try {
-    const parsed = await callAPI(conversation);
-    conversation.push({ role: 'assistant', content: JSON.stringify(parsed) });
+    const parsedResult = await callAPI(conversation);
+    conversation.push({ role: 'assistant', content: JSON.stringify(parsedResult) });
     stopLoadingAnim();
-    if (parsed.isValid === false) { showInvalid(parsed.message); }
-    else { await renderResult(parsed, {}); }
+    if (parsedResult.isValid === false) { showInvalid(parsedResult.message); }
+    else { await renderResult(parsedResult, currentAnswers, false); }
   } catch (err) {
     stopLoadingAnim(); showState('output');
-    const ei = document.getElementById('r-error-inline');
-    ei.textContent = 'Follow-up failed: ' + err.message; ei.style.display = 'block';
-    console.error(err);
+    const errInlineEl = document.getElementById('r-error-inline');
+    errInlineEl.textContent = 'Follow-up failed: ' + err.message; errInlineEl.style.display = 'block';
   } finally { setBusy(false); }
 }
 
-function sendQuick(text) { document.getElementById('inp-followup').value = text; handleFollowup(); }
+function sendQuick(quickText) { document.getElementById('inp-followup').value = quickText; handleFollowup(); }
 
 function downloadPDF() { window.print(); }
 
 function resetAll() {
   document.querySelectorAll('.all-chip').forEach(c => c.classList.remove('selected'));
-  ['other-industry', 'other-dept'].forEach(id => { const el = document.getElementById(id); if (el) { el.value = ''; el.classList.remove('visible'); } });
-  const ta = document.getElementById('all-problem'); if (ta) ta.value = '';
+  ['other-industry', 'other-dept'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.value = ''; el.classList.remove('visible'); }
+  });
+  const problemEl = document.getElementById('all-problem');
+  if (problemEl) problemEl.value = '';
   Object.keys(allCtx).forEach(k => allCtx[k] = '');
   if (wizMode) initWizard();
-  conversation = []; hasResult = false;
+  conversation = []; hasResult = false; currentAnswers = {};
+  stopAudioBriefing();
+  resetNewBlocks();
   showState('idle');
   document.getElementById('r-error').classList.remove('on');
   document.getElementById('r-invalid').classList.remove('on');
@@ -894,49 +1235,68 @@ function resetAll() {
   document.getElementById('ctx-bar').classList.remove('on');
 }
 
-function showState(s) {
-  document.getElementById('r-idle').style.display = s === 'idle' ? 'flex' : 'none';
-  document.getElementById('r-loading').classList.toggle('on', s === 'loading');
-  document.getElementById('r-output').classList.toggle('on', s === 'output');
+function showState(stateName) {
+  document.getElementById('r-idle').style.display = stateName === 'idle' ? 'flex' : 'none';
+  document.getElementById('r-loading').classList.toggle('on', stateName === 'loading');
+  document.getElementById('r-output').classList.toggle('on', stateName === 'output');
   document.getElementById('r-invalid').classList.remove('on');
   document.getElementById('r-error').classList.remove('on');
 }
 
-function setBusy(busy) {
-  ['btn-gen-all', 'wiz-next-btn', 'btn-refine'].forEach(id => { const el = document.getElementById(id); if (el) el.disabled = busy; });
-  const lbl = document.getElementById('btn-gen-all-label');
-  if (lbl) lbl.textContent = busy ? 'Analysing…' : 'Generate AI Analysis';
+function setBusy(isBusy) {
+  ['btn-gen-all', 'wiz-next-btn', 'btn-refine'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.disabled = isBusy;
+  });
+  const labelEl = document.getElementById('btn-gen-all-label');
+  if (labelEl) labelEl.textContent = isBusy ? 'Analysing…' : 'Generate AI Analysis';
 }
 
-let loadingTimer = null;
+let loadingTimerRef = null;
 function startLoadingAnim() {
-  const ids = ['ls1', 'ls2', 'ls3']; let i = 0;
-  ids.forEach(id => document.getElementById(id).classList.remove('active'));
-  document.getElementById(ids[0]).classList.add('active');
-  loadingTimer = setInterval(() => { document.getElementById(ids[i]).classList.remove('active'); i = (i + 1) % ids.length; document.getElementById(ids[i]).classList.add('active'); }, 900);
+  const stepIds = ['ls1', 'ls2', 'ls3'];
+  let activeIdx = 0;
+  stepIds.forEach(id => document.getElementById(id).classList.remove('active'));
+  document.getElementById(stepIds[0]).classList.add('active');
+  loadingTimerRef = setInterval(() => {
+    document.getElementById(stepIds[activeIdx]).classList.remove('active');
+    activeIdx = (activeIdx + 1) % stepIds.length;
+    document.getElementById(stepIds[activeIdx]).classList.add('active');
+  }, 900);
 }
-function stopLoadingAnim() { clearInterval(loadingTimer); ['ls1', 'ls2', 'ls3'].forEach(id => document.getElementById(id).classList.remove('active')); }
 
-function typewrite(el, text, speed = 14) {
+function stopLoadingAnim() {
+  clearInterval(loadingTimerRef);
+  ['ls1', 'ls2', 'ls3'].forEach(id => document.getElementById(id).classList.remove('active'));
+}
+
+function typewrite(targetEl, text, speed) {
   return new Promise(resolve => {
-    el.textContent = ''; let i = 0;
-    const tick = () => { if (i < text.length) { el.textContent += text[i++]; setTimeout(tick, speed); } else resolve(); };
+    targetEl.textContent = '';
+    if (speed === 0) { targetEl.textContent = text; resolve(); return; }
+    let charIdx = 0;
+    const tick = () => { if (charIdx < text.length) { targetEl.textContent += text[charIdx++]; setTimeout(tick, speed); } else resolve(); };
     tick();
   });
 }
 
-function copyBlock(id, btn) {
-  navigator.clipboard.writeText(document.getElementById(id).textContent.trim()).then(() => {
-    btn.textContent = 'Copied ✓'; btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+function copyBlock(elementId, btnEl) {
+  navigator.clipboard.writeText(document.getElementById(elementId).textContent.trim()).then(() => {
+    btnEl.textContent = 'Copied ✓'; btnEl.classList.add('copied');
+    setTimeout(() => { btnEl.textContent = 'Copy'; btnEl.classList.remove('copied'); }, 2000);
   });
 }
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && e.ctrlKey) { if (wizMode) { if (wizStep === WIZARD_STEPS.length - 1) handleGenerateWiz(); else wizNext(); } else handleGenerateAll(); }
-  if (e.key === 'Enter' && document.activeElement?.id === 'inp-followup') handleFollowup();
+document.addEventListener('keydown', keyEvt => {
+  if (keyEvt.key === 'Enter' && keyEvt.ctrlKey) {
+    if (wizMode) { wizStep === WIZARD_STEPS.length - 1 ? handleGenerateWiz() : wizNext(); }
+    else handleGenerateAll();
+  }
+  if (keyEvt.key === 'Enter' && document.activeElement?.id === 'inp-followup') handleFollowup();
 });
 
+initTheme();
+renderHistoryDropdown();
 showState('idle');
 </script>
 </body>
